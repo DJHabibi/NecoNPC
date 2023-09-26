@@ -9,7 +9,9 @@ namespace OpenAI
         [SerializeField] private InputField inputField;
         [SerializeField] private Button button;
         [SerializeField] private ScrollRect scroll;
-        
+
+        GameObject player;
+
         [SerializeField] private RectTransform sent;
         [SerializeField] private RectTransform received;
 
@@ -21,7 +23,8 @@ namespace OpenAI
 
         private void Start()
         {
-            button.onClick.AddListener(SendReply);
+
+            player = FindObjectOfType<PlayerMovement>().gameObject;
         }
 
         private void AppendMessage(ChatMessage message)
@@ -44,17 +47,17 @@ namespace OpenAI
                 Role = "user",
                 Content = inputField.text
             };
-            
+
             AppendMessage(newMessage);
 
-            if (messages.Count == 0) newMessage.Content = prompt + "\n" + inputField.text; 
-            
+            if (messages.Count == 0) newMessage.Content = prompt + "\n" + inputField.text;
+
             messages.Add(newMessage);
-            
+
             button.enabled = false;
             inputField.text = "";
             inputField.enabled = false;
-            
+
             // Complete the instruction
             var completionResponse = await openai.CreateChatCompletion(new CreateChatCompletionRequest()
             {
@@ -66,7 +69,7 @@ namespace OpenAI
             {
                 var message = completionResponse.Choices[0].Message;
                 message.Content = message.Content.Trim();
-                
+
                 messages.Add(message);
                 AppendMessage(message);
             }
@@ -77,6 +80,27 @@ namespace OpenAI
 
             button.enabled = true;
             inputField.enabled = true;
+        }
+        public void OnTriggerEnter(Collider other)
+        {
+            if (other.gameObject == player)
+            {
+                inputField = GameObject.FindGameObjectWithTag("PlayerInputField").GetComponent<InputField>();
+                button = GameObject.FindGameObjectWithTag("PlayerButton").GetComponent<Button>();
+                button.onClick.AddListener(SendReply);
+
+            }
+        }
+        public void OnTriggerExit(Collider other)
+        {
+            if (other.gameObject == player)
+            {
+                inputField = null;
+                button.onClick.RemoveListener(SendReply);
+                button = null;
+                
+
+            }
         }
     }
 }

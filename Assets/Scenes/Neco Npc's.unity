@@ -137,7 +137,7 @@ GameObject:
   - component: {fileID: 8292459}
   m_Layer: 5
   m_Name: Button (Legacy)
-  m_TagString: Untagged
+  m_TagString: PlayerButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -259,7 +259,7 @@ GameObject:
   - component: {fileID: 647249672}
   m_Layer: 5
   m_Name: InputField (Legacy)
-  m_TagString: Untagged
+  m_TagString: PlayerInputField
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1301,6 +1301,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1834788175}
   m_CullTransparentMesh: 1
+--- !u!1 &1336296128303105910 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4841070060556600081, guid: c82870196b32e764592e38d2082c63a0, type: 3}
+  m_PrefabInstance: {fileID: 5883273060747691111}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5883273060747691111
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1359,7 +1364,7 @@ PrefabInstance:
     - target: {fileID: 3447615810235538033, guid: c82870196b32e764592e38d2082c63a0, type: 3}
       propertyPath: button
       value: 
-      objectReference: {fileID: 8292459}
+      objectReference: {fileID: 0}
     - target: {fileID: 3447615810235538033, guid: c82870196b32e764592e38d2082c63a0, type: 3}
       propertyPath: scroll
       value: 
@@ -1371,7 +1376,7 @@ PrefabInstance:
     - target: {fileID: 3447615810235538033, guid: c82870196b32e764592e38d2082c63a0, type: 3}
       propertyPath: inputField
       value: 
-      objectReference: {fileID: 647249672}
+      objectReference: {fileID: 0}
     - target: {fileID: 4841070060556600081, guid: c82870196b32e764592e38d2082c63a0, type: 3}
       propertyPath: m_Name
       value: NPC
@@ -1383,6 +1388,14 @@ PrefabInstance:
     - target: {fileID: 5274287848573478641, guid: c82870196b32e764592e38d2082c63a0, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5274287848835306874, guid: c82870196b32e764592e38d2082c63a0, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.004888448
+      objectReference: {fileID: 0}
+    - target: {fileID: 5274287848835306874, guid: c82870196b32e764592e38d2082c63a0, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.0065708
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c82870196b32e764592e38d2082c63a0, type: 3}
@@ -1452,5 +1465,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 8980375014619670254, guid: 2493e1ed9b8e3da4d94c93dfc8868548, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2493e1ed9b8e3da4d94c93dfc8868548, type: 3}
+--- !u!65 &9114707292705644055
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1336296128303105910}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3.5998452, y: 1.7635176, z: 2.8839922}
+  m_Center: {x: 0.08155334, y: 1.18, z: -0.024673939}
