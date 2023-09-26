@@ -71,7 +71,6 @@ public class CameraManager : MonoBehaviour
 
         if (Physics.SphereCast(cameraPivot.transform.position,0.2f,direction,out hit,Mathf.Abs(targetPositon),collisionLayers))
         {
-            Debug.Log("Colli");
             float distance = Vector3.Distance(cameraPivot.position, hit.point);
             targetPositon =- (distance - cameraCollisionOffset);
         }
