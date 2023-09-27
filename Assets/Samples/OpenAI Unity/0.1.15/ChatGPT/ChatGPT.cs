@@ -19,11 +19,12 @@ namespace OpenAI
         private OpenAIApi openai = new OpenAIApi();
 
         private List<ChatMessage> messages = new List<ChatMessage>();
-        [SerializeField] public ChatPrompt npcBehaviour; 
-
+        [SerializeField] public ChatPrompt npcBehaviour;
+        [SerializeField] Animator animator;
+        [SerializeField] GameObject canvas;
         private void Start()
         {
-
+            canvas.SetActive(false);
             player = FindObjectOfType<PlayerMovement>().gameObject;
         }
 
@@ -72,6 +73,7 @@ namespace OpenAI
 
                 messages.Add(message);
                 AppendMessage(message);
+                animator.SetTrigger("Talk");
             }
             else
             {
@@ -85,6 +87,7 @@ namespace OpenAI
         {
             if (other.gameObject == player)
             {
+                canvas.SetActive(true);
                 inputField = GameObject.FindGameObjectWithTag("PlayerInputField").GetComponent<InputField>();
                 button = GameObject.FindGameObjectWithTag("PlayerButton").GetComponent<Button>();
                 button.onClick.AddListener(SendReply);
@@ -95,6 +98,7 @@ namespace OpenAI
         {
             if (other.gameObject == player)
             {
+                canvas.SetActive(false);
                 inputField = null;
                 button.onClick.RemoveListener(SendReply);
                 button = null;
