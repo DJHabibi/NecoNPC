@@ -145,6 +145,54 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Chat Inputs"",
+            ""id"": ""d0d2f341-912f-4725-9d0c-cd6edfe4652a"",
+            ""actions"": [
+                {
+                    ""name"": ""Chat"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""cda6ca37-422f-4615-824a-a1ea1e639169"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SendChat"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""f3baca08-237a-4a08-bc35-077a57f1783b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""9a7cac3b-212c-46dc-8e01-f4cece88609f"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Chat"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""daae55d1-a3ae-465a-ab8b-5395c9e22691"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SendChat"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -154,6 +202,10 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         m_PlayerMovement_Movement = m_PlayerMovement.FindAction("Movement", throwIfNotFound: true);
         m_PlayerMovement_Attack1Attack2 = m_PlayerMovement.FindAction("Attack1/Attack2", throwIfNotFound: true);
         m_PlayerMovement_Camera = m_PlayerMovement.FindAction("Camera", throwIfNotFound: true);
+        // Chat Inputs
+        m_ChatInputs = asset.FindActionMap("Chat Inputs", throwIfNotFound: true);
+        m_ChatInputs_Chat = m_ChatInputs.FindAction("Chat", throwIfNotFound: true);
+        m_ChatInputs_SendChat = m_ChatInputs.FindAction("SendChat", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -273,10 +325,69 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         }
     }
     public PlayerMovementActions @PlayerMovement => new PlayerMovementActions(this);
+
+    // Chat Inputs
+    private readonly InputActionMap m_ChatInputs;
+    private List<IChatInputsActions> m_ChatInputsActionsCallbackInterfaces = new List<IChatInputsActions>();
+    private readonly InputAction m_ChatInputs_Chat;
+    private readonly InputAction m_ChatInputs_SendChat;
+    public struct ChatInputsActions
+    {
+        private @PlayerInputs m_Wrapper;
+        public ChatInputsActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Chat => m_Wrapper.m_ChatInputs_Chat;
+        public InputAction @SendChat => m_Wrapper.m_ChatInputs_SendChat;
+        public InputActionMap Get() { return m_Wrapper.m_ChatInputs; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(ChatInputsActions set) { return set.Get(); }
+        public void AddCallbacks(IChatInputsActions instance)
+        {
+            if (instance == null || m_Wrapper.m_ChatInputsActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_ChatInputsActionsCallbackInterfaces.Add(instance);
+            @Chat.started += instance.OnChat;
+            @Chat.performed += instance.OnChat;
+            @Chat.canceled += instance.OnChat;
+            @SendChat.started += instance.OnSendChat;
+            @SendChat.performed += instance.OnSendChat;
+            @SendChat.canceled += instance.OnSendChat;
+        }
+
+        private void UnregisterCallbacks(IChatInputsActions instance)
+        {
+            @Chat.started -= instance.OnChat;
+            @Chat.performed -= instance.OnChat;
+            @Chat.canceled -= instance.OnChat;
+            @SendChat.started -= instance.OnSendChat;
+            @SendChat.performed -= instance.OnSendChat;
+            @SendChat.canceled -= instance.OnSendChat;
+        }
+
+        public void RemoveCallbacks(IChatInputsActions instance)
+        {
+            if (m_Wrapper.m_ChatInputsActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IChatInputsActions instance)
+        {
+            foreach (var item in m_Wrapper.m_ChatInputsActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_ChatInputsActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public ChatInputsActions @ChatInputs => new ChatInputsActions(this);
     public interface IPlayerMovementActions
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnAttack1Attack2(InputAction.CallbackContext context);
         void OnCamera(InputAction.CallbackContext context);
+    }
+    public interface IChatInputsActions
+    {
+        void OnChat(InputAction.CallbackContext context);
+        void OnSendChat(InputAction.CallbackContext context);
     }
 }

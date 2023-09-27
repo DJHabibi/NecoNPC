@@ -123,6 +123,54 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Chat Inputs",
+            "id": "d0d2f341-912f-4725-9d0c-cd6edfe4652a",
+            "actions": [
+                {
+                    "name": "Chat",
+                    "type": "PassThrough",
+                    "id": "cda6ca37-422f-4615-824a-a1ea1e639169",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SendChat",
+                    "type": "PassThrough",
+                    "id": "f3baca08-237a-4a08-bc35-077a57f1783b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "9a7cac3b-212c-46dc-8e01-f4cece88609f",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Chat",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "daae55d1-a3ae-465a-ab8b-5395c9e22691",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SendChat",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

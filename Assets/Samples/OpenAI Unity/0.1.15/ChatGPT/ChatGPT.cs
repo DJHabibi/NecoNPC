@@ -19,7 +19,7 @@ namespace OpenAI
         private OpenAIApi openai = new OpenAIApi();
 
         private List<ChatMessage> messages = new List<ChatMessage>();
-        private string prompt = "Act as a random stranger in a chat room and reply to the questions. Don't break character. Don't ever mention that you are an AI model.";
+        [SerializeField] public ChatPrompt npcBehaviour; 
 
         private void Start()
         {
@@ -50,13 +50,13 @@ namespace OpenAI
 
             AppendMessage(newMessage);
 
-            if (messages.Count == 0) newMessage.Content = prompt + "\n" + inputField.text;
+            if (messages.Count == 0) newMessage.Content = npcBehaviour.NpcBehaviour + "\n" + inputField.text;
 
             messages.Add(newMessage);
 
-            button.enabled = false;
+           // button.enabled = false;
             inputField.text = "";
-            inputField.enabled = false;
+           // inputField.enabled = false;
 
             // Complete the instruction
             var completionResponse = await openai.CreateChatCompletion(new CreateChatCompletionRequest()
@@ -78,8 +78,8 @@ namespace OpenAI
                 Debug.LogWarning("No text was generated from this prompt.");
             }
 
-            button.enabled = true;
-            inputField.enabled = true;
+            //button.enabled = true;
+            //inputField.enabled = true;
         }
         public void OnTriggerEnter(Collider other)
         {
@@ -98,7 +98,7 @@ namespace OpenAI
                 inputField = null;
                 button.onClick.RemoveListener(SendReply);
                 button = null;
-                
+
 
             }
         }
