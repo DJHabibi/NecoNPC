@@ -9,16 +9,13 @@ namespace OpenAI
         [SerializeField] private InputField inputField;
         [SerializeField] private Button button;
         [SerializeField] private ScrollRect scroll;
-
-        GameObject player;
-
         [SerializeField] private RectTransform sent;
         [SerializeField] private RectTransform received;
-
         private float height;
         private OpenAIApi openai = new OpenAIApi();
-
         private List<ChatMessage> messages = new List<ChatMessage>();
+
+        GameObject player;
         [SerializeField] public ChatPrompt npcBehaviour;
         [SerializeField] Animator animator;
         [SerializeField] GameObject canvas;
@@ -55,9 +52,8 @@ namespace OpenAI
 
             messages.Add(newMessage);
 
-           // button.enabled = false;
+            button.enabled = false;
             inputField.text = "";
-           // inputField.enabled = false;
 
             // Complete the instruction
             var completionResponse = await openai.CreateChatCompletion(new CreateChatCompletionRequest()
@@ -80,8 +76,7 @@ namespace OpenAI
                 Debug.LogWarning("No text was generated from this prompt.");
             }
 
-            //button.enabled = true;
-            //inputField.enabled = true;
+            button.enabled = true;
         }
         public void OnTriggerEnter(Collider other)
         {
