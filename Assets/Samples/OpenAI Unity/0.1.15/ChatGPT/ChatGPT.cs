@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using UnityEngine.AI;
 
 namespace OpenAI
 {
@@ -19,10 +20,14 @@ namespace OpenAI
         [SerializeField] public ChatPrompt npcBehaviour;
         [SerializeField] Animator animator;
         [SerializeField] GameObject canvas;
+        [SerializeField] NavMeshAgent agent;
+        private float agentDefaultSpeed;
         private void Start()
         {
             canvas.SetActive(false);
             player = FindObjectOfType<PlayerMovement>().gameObject;
+            agent = GetComponent<NavMeshAgent>();
+            agentDefaultSpeed = agent.speed;
         }
 
         private void AppendMessage(ChatMessage message)
@@ -86,7 +91,7 @@ namespace OpenAI
                 inputField = GameObject.FindGameObjectWithTag("PlayerInputField").GetComponent<InputField>();
                 button = GameObject.FindGameObjectWithTag("PlayerButton").GetComponent<Button>();
                 button.onClick.AddListener(SendReply);
-
+                agent.speed = 0;
             }
         }
         public void OnTriggerExit(Collider other)
@@ -97,7 +102,7 @@ namespace OpenAI
                 inputField = null;
                 button.onClick.RemoveListener(SendReply);
                 button = null;
-
+                agent.speed = agentDefaultSpeed;
 
             }
         }

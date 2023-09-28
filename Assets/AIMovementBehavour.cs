@@ -9,10 +9,8 @@ public class AIMovementBehavour : MonoBehaviour
 {
     private NavMeshAgent navMeshAgent;
     public float maxDistance;
-
     private void Start()
     {
-        
         navMeshAgent = GetComponent<NavMeshAgent>();
         SetRandomDestination();
         StartCoroutine(RandomWalk());
