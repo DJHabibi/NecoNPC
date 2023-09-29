@@ -21,6 +21,7 @@ namespace OpenAI
         [SerializeField] Animator animator;
         [SerializeField] GameObject canvas;
         [SerializeField] NavMeshAgent agent;
+        [SerializeField] private CameraManager camera;
         private float agentDefaultSpeed;
         private void Start()
         {
@@ -28,6 +29,7 @@ namespace OpenAI
             player = FindObjectOfType<PlayerMovement>().gameObject;
             agent = GetComponent<NavMeshAgent>();
             agentDefaultSpeed = agent.speed;
+            camera = FindObjectOfType<CameraManager>();
         }
 
         private void AppendMessage(ChatMessage message)
@@ -92,6 +94,7 @@ namespace OpenAI
                 button = GameObject.FindGameObjectWithTag("PlayerButton").GetComponent<Button>();
                 button.onClick.AddListener(SendReply);
                 agent.speed = 0;
+               
             }
         }
         public void OnTriggerExit(Collider other)
@@ -103,7 +106,19 @@ namespace OpenAI
                 button.onClick.RemoveListener(SendReply);
                 button = null;
                 agent.speed = agentDefaultSpeed;
+               
 
+            }
+        }
+        public void OnTriggerStay(Collider other)
+        {
+            if(other.gameObject == player && inputField.isFocused)
+            {
+                camera.focusTransform = this.gameObject.transform;
+            }
+            if (inputField !=null && !inputField.isFocused)
+            {
+                camera.focusTransform = camera.playerFocus;
             }
         }
     }

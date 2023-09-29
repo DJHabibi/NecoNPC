@@ -5,7 +5,8 @@ using UnityEngine;
 public class CameraManager : MonoBehaviour
 {
     InputManager inputManager;
-    public Transform playerTransform;
+    public Transform focusTransform;
+    public Transform playerFocus;
     private float defaultPosition;
     public LayerMask collisionLayers;
     private Vector3 cameraVectorPosition;
@@ -26,10 +27,11 @@ public class CameraManager : MonoBehaviour
 
     private void Awake()
     {
-        playerTransform = FindObjectOfType<PlayerManager>().transform;
+        focusTransform = FindObjectOfType<PlayerManager>().transform;
         inputManager = FindAnyObjectByType<InputManager>();
         cameraTransform = Camera.main.transform;
         defaultPosition = cameraTransform.localPosition.z;
+        playerFocus = focusTransform;
     }
     public void HandleAllCameraMovement()
     {
@@ -39,7 +41,7 @@ public class CameraManager : MonoBehaviour
     }
     private void FollowPlayer()
     {
-        Vector3 targetPos = Vector3.SmoothDamp(transform.position, playerTransform.position, ref cameraFollowVelocity, cameraFollowSpeed);
+        Vector3 targetPos = Vector3.SmoothDamp(transform.position, focusTransform.position, ref cameraFollowVelocity, cameraFollowSpeed);
         transform.position = targetPos;
     }
     private void RotateCam()

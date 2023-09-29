@@ -47,10 +47,8 @@ public class AIMovementBehavour : MonoBehaviour
             if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
             {
                 SetRandomDestination();
-            }
-
-            // Check if the agent's velocity magnitude is greater than a small threshold.     
-            yield return new WaitForSeconds(Random.Range(5,20)); // Yielding once per frame.
+            }   
+            yield return new WaitForSeconds(Random.Range(5,20));
         }
     }
     private void CheckMoving()

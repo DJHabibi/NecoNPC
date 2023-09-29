@@ -22,8 +22,6 @@ public class ChatInputs : MonoBehaviour
             playerMovement.movementSpeed = 0;
             playerMovement.rotationSpeed = 0;
             cameraManager.cameraFollowSpeed = 0;
-            cameraManager.lookangle = 0;
-            cameraManager.pivotangle = 0;
 
         }
         else if (!chatField.isFocused)
