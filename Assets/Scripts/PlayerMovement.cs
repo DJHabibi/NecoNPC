@@ -8,10 +8,13 @@ public class PlayerMovement : MonoBehaviour
     Vector3 moveDirection;
     Transform cameraObject;
     Rigidbody playerRigidBody;
+    public Transform groundCheckTransform;
+    public LayerMask collisionLayer;
     public float movementSpeed = 7;
     public float rotationSpeed = 10;
     private bool Running;
     Animator animator;
+    public bool grounded;
 
     public void Awake()
     {
@@ -35,16 +38,18 @@ public class PlayerMovement : MonoBehaviour
 
         Vector3 movementVelocity = moveDirection;
         playerRigidBody.velocity = movementVelocity;
-        if (playerRigidBody.velocity != Vector3.zero)
+       
+        if (playerRigidBody.velocity.x != 0 && playerRigidBody.velocity.z != 0)
         {
             Running = true;
             animator.SetBool("Running", Running);
         }
-        if (playerRigidBody.velocity == Vector3.zero)
+        if (playerRigidBody.velocity.x == 0 && playerRigidBody.velocity.z == 0)
         {
             Running = false;
             animator.SetBool("Running", Running);
         }
+       
     }
     private void HandleRotation()
     {
