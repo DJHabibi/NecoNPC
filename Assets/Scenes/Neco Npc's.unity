@@ -12018,6 +12018,7 @@ MonoBehaviour:
   animator: {fileID: 836887993}
   canvas: {fileID: 1341812094}
   agent: {fileID: 0}
+  camera: {fileID: 0}
 --- !u!65 &1139031887
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -13211,6 +13212,11 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!4 &1663480539 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8097994050294895192, guid: 2493e1ed9b8e3da4d94c93dfc8868548, type: 3}
+  m_PrefabInstance: {fileID: 8097994051955594193}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1663982120
 GameObject:
   m_ObjectHideFlags: 0
@@ -13484,7 +13490,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 996c591220b6efd4c956a84baf780645, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerTransform: {fileID: 0}
+  focusTransform: {fileID: 1663480539}
+  playerFocus: {fileID: 0}
   collisionLayers:
     serializedVersion: 2
     m_Bits: 72
@@ -17461,6 +17468,7 @@ MonoBehaviour:
   animator: {fileID: 751860457}
   canvas: {fileID: 1726528019}
   agent: {fileID: 0}
+  camera: {fileID: 0}
 --- !u!114 &9114707292705644059
 MonoBehaviour:
   m_ObjectHideFlags: 0
