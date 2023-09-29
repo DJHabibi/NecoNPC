@@ -23,6 +23,8 @@ namespace OpenAI
         [SerializeField] NavMeshAgent agent;
         [SerializeField] private CameraManager camera;
         private float agentDefaultSpeed;
+        private bool isPlayerInsideTrigger;
+
         private void Start()
         {
             canvas.SetActive(false);
@@ -89,6 +91,7 @@ namespace OpenAI
         {
             if (other.gameObject == player)
             {
+                isPlayerInsideTrigger = true;
                 canvas.SetActive(true);
                 inputField = GameObject.FindGameObjectWithTag("PlayerInputField").GetComponent<InputField>();
                 button = GameObject.FindGameObjectWithTag("PlayerButton").GetComponent<Button>();
@@ -101,6 +104,7 @@ namespace OpenAI
         {
             if (other.gameObject == player)
             {
+                isPlayerInsideTrigger = false;
                 canvas.SetActive(false);
                 inputField = null;
                 button.onClick.RemoveListener(SendReply);
@@ -119,6 +123,22 @@ namespace OpenAI
             if (inputField !=null && !inputField.isFocused)
             {
                 camera.focusTransform = camera.playerFocus;
+            }
+            if (isPlayerInsideTrigger && inputField != null && inputField.isFocused)
+            {
+                // Continuously rotate to face the player when the player is inside and input is focused
+                RotateToFacePlayer(player.transform);
+            }
+        }
+        private void RotateToFacePlayer(Transform target)
+        {
+            Vector3 lookDirection = target.position - transform.position;
+            lookDirection.y = 0; 
+
+            if (lookDirection != Vector3.zero)
+            {
+                //Rotate the object to face the player
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookDirection), Time.deltaTime * 2);
             }
         }
     }
