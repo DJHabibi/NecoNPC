@@ -29,11 +29,11 @@ namespace OpenAI
         {
             if (Hungry() && !npcMovement.isEatingCoroutineRunning)
             {
-                npcMovement.StopCoroutine(npcMovement.RandomWalk());
+                //npcMovement.StopCoroutine(npcMovement.RandomWalk());
                 npcMovement.StartCoroutine(npcMovement.Eating());
 
             }
-            if (Bored() && !npcMovement.isPlayingCoroutineRunning)
+           /* if (Bored() && !npcMovement.isPlayingCoroutineRunning)
             {
                 npcMovement.StartCoroutine(npcMovement.Playing());
                 npcMovement.StopCoroutine(npcMovement.RandomWalk());
@@ -49,7 +49,7 @@ namespace OpenAI
                 {
                     npcMovement.StartCoroutine(npcMovement.RandomWalk());
                 }
-            }
+            }*/
 
 
         }

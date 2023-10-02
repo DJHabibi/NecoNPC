@@ -113,9 +113,11 @@ public class AIMovementBehaviour : MonoBehaviour
         randomDirection += transform.position;
 
         NavMeshHit hit;
-        if (NavMesh.SamplePosition(randomDirection, out hit, 10.0f, NavMesh.GetAreaFromName("Eating Area")))
+        if (NavMesh.SamplePosition(randomDirection, out hit, 100.0f, NavMesh.GetAreaFromName("Eating Area")))
         {
+            Debug.Log(NavMesh.GetAreaFromName("Eating Area"));
             randomPoint = hit.position;
+            Debug.Log(randomPoint);
         }
         return randomPoint;
     }
@@ -128,6 +130,7 @@ public class AIMovementBehaviour : MonoBehaviour
         NavMeshHit hit;
         if (NavMesh.SamplePosition(randomDirection, out hit, 10.0f, NavMesh.GetAreaFromName("Play Area")))
         {
+            Debug.Log(NavMesh.GetAreaFromName("Play Area"));
             randomPoint = hit.position;
         }
         return randomPoint;
@@ -141,6 +144,7 @@ public class AIMovementBehaviour : MonoBehaviour
         NavMeshHit hit;
         if (NavMesh.SamplePosition(randomDirection, out hit, 10.0f, NavMesh.GetAreaFromName("Work Area")))
         {
+            Debug.Log(NavMesh.GetAreaFromName("Work Area"));
             randomPoint = hit.position;
         }
         return randomPoint;
