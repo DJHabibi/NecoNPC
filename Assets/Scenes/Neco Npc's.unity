@@ -2184,8 +2184,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72ba7b5716e32eb4c8a0138e3632b630, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxDistance: 10
+  maxDistance: 20
   npcAnimator: {fileID: 836887993}
+  isEatingCoroutineRunning: 0
+  isPlayingCoroutineRunning: 0
+  isWorkingCoroutineRunning: 0
+  isWanderingCoroutineRunning: 0
   food: {fileID: 0}
   entertainment: {fileID: 0}
   work: {fileID: 0}
@@ -14906,7 +14910,7 @@ MonoBehaviour:
   fullfilment: 100
   hungerSpeed: 1
   entertainedLoss: 0.5
-  maxFullfilment: 0
+  maxFullfilment: 100
 --- !u!114 &9114707292705644059
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14919,8 +14923,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72ba7b5716e32eb4c8a0138e3632b630, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxDistance: 10
+  maxDistance: 20
   npcAnimator: {fileID: 751860457}
+  isEatingCoroutineRunning: 0
+  isPlayingCoroutineRunning: 0
+  isWorkingCoroutineRunning: 0
+  isWanderingCoroutineRunning: 0
   food: {fileID: 0}
   entertainment: {fileID: 0}
   work: {fileID: 0}

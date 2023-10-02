@@ -18,39 +18,37 @@ namespace OpenAI
         public override void Start()
         {
             npcMovement = GetComponent<AIMovementBehaviour>();
-            Mathf.Clamp(hunger, 0, Mathf.Infinity);
-            Mathf.Clamp(entertained, 0, Mathf.Infinity);
-            Mathf.Clamp(fullfilment, 0, maxFullfilment);
-            fullfilment = 0;
             hungerThreshold = Random.Range(0, hunger / 5);
             boredomThreshold = Random.Range(0, entertained / 6);
-            fullfilmentThreshold = Random.Range(0, maxFullfilment/6);
+            fullfilmentThreshold = Random.Range(0, maxFullfilment / 6);
             Debug.Log(hungerThreshold);
             base.Start();
 
         }
         public void Update()
         {
-            if (Hungry()) 
+            if (Hungry() && !npcMovement.isEatingCoroutineRunning)
             {
-                npcMovement.StartCoroutine(npcMovement.Eating());
-               
                 npcMovement.StopCoroutine(npcMovement.RandomWalk());
+                npcMovement.StartCoroutine(npcMovement.Eating());
 
             }
-            if (Bored())
+            if (Bored() && !npcMovement.isPlayingCoroutineRunning)
             {
                 npcMovement.StartCoroutine(npcMovement.Playing());
                 npcMovement.StopCoroutine(npcMovement.RandomWalk());
             }
-            if (NotFullfiled())
+            if (NotFullfiled() && !npcMovement.isWorkingCoroutineRunning)
             {
                 npcMovement.StartCoroutine(npcMovement.Working());
                 npcMovement.StopCoroutine(npcMovement.RandomWalk());
             }
             if (Hungry() == false || Bored() == false || NotFullfiled() == false)
             {
-                npcMovement.StartCoroutine(npcMovement.RandomWalk());
+                if (!npcMovement.isWanderingCoroutineRunning)
+                {
+                    npcMovement.StartCoroutine(npcMovement.RandomWalk());
+                }
             }
 
 
@@ -58,28 +56,40 @@ namespace OpenAI
         public bool Hungry()
         {
             hunger -= hungerSpeed * Time.deltaTime;
+            if (hunger < 0)
+            {
+                hunger = 0;
+            }
             if (hunger <= hungerThreshold)
             {
-                Debug.Log("Hungry");
+                // Debug.Log("Hungry");
                 return true;
             }
             else return false;
-            
+
         }
         public bool Bored()
         {
             entertained -= entertainedLoss * Time.deltaTime;
+            if (entertained < 0)
+            {
+                entertained = 0;
+            }
             if (entertained <= boredomThreshold)
             {
                 Debug.Log("Bored");
                 return true;
-               
+
             }
             else return false;
         }
         public bool NotFullfiled()
         {
             fullfilment -= 1 * Time.deltaTime;
+            if (fullfilment < 0)
+            {
+                fullfilment = 0;
+            }
             if (fullfilment <= fullfilmentThreshold)
             {
                 Debug.Log(" Not Fullfiled");
@@ -89,12 +99,12 @@ namespace OpenAI
         }
         public void NPCBehaviour()
         {
-            
+
         }
         public override void OnTriggerEnter(Collider other)
-        {  
+        {
             base.OnTriggerEnter(other);
-        } 
+        }
         public override void OnTriggerExit(Collider other)
         {
             base.OnTriggerExit(other);

@@ -10,6 +10,10 @@ public class AIMovementBehaviour : MonoBehaviour
     private NavMeshAgent navMeshAgent;
     public float maxDistance;
     public Animator npcAnimator;
+    public bool isEatingCoroutineRunning = false;
+    public bool isPlayingCoroutineRunning = false;
+    public bool isWorkingCoroutineRunning = false;
+    public bool isWanderingCoroutineRunning = false;
     [SerializeField] public Transform food, entertainment, work;
     private void Start()
     {
@@ -43,51 +47,53 @@ public class AIMovementBehaviour : MonoBehaviour
     }
     public IEnumerator RandomWalk()
     {
+        isWanderingCoroutineRunning = true;
         SetWanderDestination();
-        while (true)
+        if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
         {
-            if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
-            {
-                SetWanderDestination();
-            }
-            yield return new WaitForSeconds(Random.Range(5, 20));
+            SetWanderDestination();
         }
+        yield return new WaitForSeconds(Random.Range(5, 20));
+        isWanderingCoroutineRunning = false;
+
     }
     public IEnumerator Eating()
     {
+        isEatingCoroutineRunning = true;
         SetNeedsDestination(GetFoodArea());
-        while (true)
+        if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
         {
-            if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
-            {
-                SetNeedsDestination(GetFoodArea());
-            }
-            yield return new WaitForSeconds(Random.Range(5, 20));
+            SetNeedsDestination(GetFoodArea());
         }
+        yield return new WaitForSeconds(Random.Range(5, 20));
+        isEatingCoroutineRunning = false;
+
     }
     public IEnumerator Playing()
     {
+        isPlayingCoroutineRunning = true;
         SetNeedsDestination(GetPlayArea());
-        while (true)
+
+        if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
         {
-            if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
-            {
-                SetNeedsDestination(GetPlayArea());
-            }
-            yield return new WaitForSeconds(Random.Range(5, 20));
+            SetNeedsDestination(GetPlayArea());
         }
+        yield return new WaitForSeconds(Random.Range(5, 20));
+        isPlayingCoroutineRunning = false;
+
     }
     public IEnumerator Working()
     {
+        isWorkingCoroutineRunning = true;
         SetNeedsDestination(GetWorkArea());
-        while (true)
+
+        if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
         {
-            if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
-            {
-                SetNeedsDestination(GetWorkArea());
-            }
-            yield return new WaitForSeconds(Random.Range(5, 20));
+            SetNeedsDestination(GetWorkArea());
         }
+        yield return new WaitForSeconds(Random.Range(5, 20));
+        isWorkingCoroutineRunning = true;
+
     }
     private void CheckMoving()
     {
@@ -107,7 +113,7 @@ public class AIMovementBehaviour : MonoBehaviour
         randomDirection += transform.position;
 
         NavMeshHit hit;
-        if (NavMesh.SamplePosition(randomDirection, out hit, 10.0f, NavMesh.GetAreaFromName("EatingArea")))
+        if (NavMesh.SamplePosition(randomDirection, out hit, 10.0f, NavMesh.GetAreaFromName("Eating Area")))
         {
             randomPoint = hit.position;
         }
@@ -120,7 +126,7 @@ public class AIMovementBehaviour : MonoBehaviour
         randomDirection += transform.position;
 
         NavMeshHit hit;
-        if (NavMesh.SamplePosition(randomDirection, out hit, 10.0f, NavMesh.GetAreaFromName("PlayArea")))
+        if (NavMesh.SamplePosition(randomDirection, out hit, 10.0f, NavMesh.GetAreaFromName("Play Area")))
         {
             randomPoint = hit.position;
         }
@@ -133,7 +139,7 @@ public class AIMovementBehaviour : MonoBehaviour
         randomDirection += transform.position;
 
         NavMeshHit hit;
-        if (NavMesh.SamplePosition(randomDirection, out hit, 10.0f, NavMesh.GetAreaFromName("WorkArea")))
+        if (NavMesh.SamplePosition(randomDirection, out hit, 10.0f, NavMesh.GetAreaFromName("Work Area")))
         {
             randomPoint = hit.position;
         }
