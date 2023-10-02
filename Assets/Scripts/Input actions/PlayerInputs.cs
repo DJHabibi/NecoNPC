@@ -154,7 +154,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""name"": ""Chat"",
                     ""type"": ""PassThrough"",
                     ""id"": ""cda6ca37-422f-4615-824a-a1ea1e639169"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -163,7 +163,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""name"": ""SendChat"",
                     ""type"": ""PassThrough"",
                     ""id"": ""f3baca08-237a-4a08-bc35-077a57f1783b"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
