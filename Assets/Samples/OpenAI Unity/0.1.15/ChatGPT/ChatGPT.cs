@@ -25,7 +25,7 @@ namespace OpenAI
         private float agentDefaultSpeed;
         private bool isPlayerInsideTrigger;
 
-        private void Start()
+        public virtual void Start()
         {
             canvas.SetActive(false);
             player = FindObjectOfType<PlayerMovement>().gameObject;
@@ -47,7 +47,7 @@ namespace OpenAI
             scroll.verticalNormalizedPosition = 0;
         }
 
-        private async void SendReply()
+        public async void SendReply()
         {
             var newMessage = new ChatMessage()
             {
@@ -87,7 +87,7 @@ namespace OpenAI
 
             button.enabled = true;
         }
-        public void OnTriggerEnter(Collider other)
+        public virtual void OnTriggerEnter(Collider other)
         {
             if (other.gameObject == player)
             {
@@ -100,7 +100,7 @@ namespace OpenAI
                
             }
         }
-        public void OnTriggerExit(Collider other)
+        public virtual void OnTriggerExit(Collider other)
         {
             if (other.gameObject == player)
             {
@@ -114,7 +114,7 @@ namespace OpenAI
 
             }
         }
-        public void OnTriggerStay(Collider other)
+        public virtual void OnTriggerStay(Collider other)
         {
             if(other.gameObject == player && inputField.isFocused)
             {
