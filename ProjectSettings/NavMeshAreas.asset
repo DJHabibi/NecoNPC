@@ -12,11 +12,11 @@ NavMeshProjectSettings:
   - name: Jump
     cost: 2
   - name: Eating Area
-    cost: 1
+    cost: 2
   - name: Play Area
-    cost: 1
+    cost: 2
   - name: Work Area
-    cost: 1
+    cost: 2
   - name: 
     cost: 1
   - name: 

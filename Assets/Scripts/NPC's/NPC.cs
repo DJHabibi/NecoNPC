@@ -13,13 +13,19 @@ namespace OpenAI
         [SerializeField] public float fullfilment;
         [SerializeField] public float hungerSpeed;
         [SerializeField] public float entertainedLoss;
+        [SerializeField] public float fullfilmentLoss;
         private float hungerThreshold, boredomThreshold, fullfilmentThreshold;
+        private float baseHungerSpeed, baseentertainedLossSpeed, baseFullfilmentLossSpeed;
         public float maxFullfilment;
         public override void Start()
         {
+            baseHungerSpeed = hungerSpeed;
+            baseentertainedLossSpeed = entertainedLoss;
+            baseFullfilmentLossSpeed = fullfilmentLoss;
+
             npcMovement = GetComponent<AIMovementBehaviour>();
-            hungerThreshold = Random.Range(0, hunger / 5);
-            boredomThreshold = Random.Range(0, entertained / 6);
+            hungerThreshold = Random.Range(0, hunger / 4);
+            boredomThreshold = Random.Range(0, entertained / 5);
             fullfilmentThreshold = Random.Range(0, maxFullfilment / 6);
             Debug.Log(hungerThreshold);
             base.Start();
@@ -29,33 +35,36 @@ namespace OpenAI
         {
             if (Hungry() && !npcMovement.isEatingCoroutineRunning)
             {
-                //npcMovement.StopCoroutine(npcMovement.RandomWalk());
+                npcMovement.StopCoroutine(npcMovement.RandomWalk());
                 npcMovement.StartCoroutine(npcMovement.Eating());
 
             }
-           /* if (Bored() && !npcMovement.isPlayingCoroutineRunning)
+            if (Bored() && !npcMovement.isPlayingCoroutineRunning)
             {
-                npcMovement.StartCoroutine(npcMovement.Playing());
                 npcMovement.StopCoroutine(npcMovement.RandomWalk());
+                npcMovement.StartCoroutine(npcMovement.Playing());
+
             }
             if (NotFullfiled() && !npcMovement.isWorkingCoroutineRunning)
             {
-                npcMovement.StartCoroutine(npcMovement.Working());
                 npcMovement.StopCoroutine(npcMovement.RandomWalk());
+                npcMovement.StartCoroutine(npcMovement.Working());
+
             }
-            if (Hungry() == false || Bored() == false || NotFullfiled() == false)
+            if (Hungry() == false && Bored() == false && NotFullfiled() == false && !npcMovement.isWanderingCoroutineRunning && !npcMovement.isPlayingCoroutineRunning && !npcMovement.isWorkingCoroutineRunning)
             {
-                if (!npcMovement.isWanderingCoroutineRunning)
-                {
-                    npcMovement.StartCoroutine(npcMovement.RandomWalk());
-                }
-            }*/
+                npcMovement.StartCoroutine(npcMovement.RandomWalk());
+            }
 
 
         }
         public bool Hungry()
         {
-            hunger -= hungerSpeed * Time.deltaTime;
+            if (!npcMovement.isEating)
+            {
+                hunger -= hungerSpeed * Time.deltaTime;
+            }
+            else hunger += hungerSpeed * 4 * Time.deltaTime;
             if (hunger < 0)
             {
                 hunger = 0;
@@ -70,7 +79,11 @@ namespace OpenAI
         }
         public bool Bored()
         {
-            entertained -= entertainedLoss * Time.deltaTime;
+            if (!npcMovement.isPlaying)
+            {
+                entertained -= entertainedLoss * Time.deltaTime;
+            }
+            else entertained += entertainedLoss * 4 * Time.deltaTime;
             if (entertained < 0)
             {
                 entertained = 0;
@@ -85,7 +98,11 @@ namespace OpenAI
         }
         public bool NotFullfiled()
         {
-            fullfilment -= 1 * Time.deltaTime;
+            if (!npcMovement.isWorking)
+            {
+                fullfilment -= fullfilmentLoss * Time.deltaTime;
+            }
+            else fullfilment += fullfilmentLoss * 4 * Time.deltaTime;
             if (fullfilment < 0)
             {
                 fullfilment = 0;
@@ -96,10 +113,6 @@ namespace OpenAI
                 return true;
             }
             else return false;
-        }
-        public void NPCBehaviour()
-        {
-
         }
         public override void OnTriggerEnter(Collider other)
         {

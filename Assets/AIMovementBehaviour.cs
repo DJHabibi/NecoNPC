@@ -10,11 +10,16 @@ public class AIMovementBehaviour : MonoBehaviour
     private NavMeshAgent navMeshAgent;
     public float maxDistance;
     public Animator npcAnimator;
+
     public bool isEatingCoroutineRunning = false;
     public bool isPlayingCoroutineRunning = false;
     public bool isWorkingCoroutineRunning = false;
     public bool isWanderingCoroutineRunning = false;
     [SerializeField] public Transform food, entertainment, work;
+    public bool isPlaying;
+    public bool isWorking;
+    public bool isEating;
+
     private void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
@@ -28,9 +33,9 @@ public class AIMovementBehaviour : MonoBehaviour
         Vector3 randomNavMeshPoint = GetRandomNavMeshPoint();
         navMeshAgent.SetDestination(randomNavMeshPoint);
     }
-    public void SetNeedsDestination(Vector3 needsPosition)
+    public void SetNeedsDestination(Vector3 needs)
     {
-        navMeshAgent.SetDestination(needsPosition);
+        navMeshAgent.SetDestination(needs);
     }
     private Vector3 GetRandomNavMeshPoint()
     {
@@ -53,47 +58,56 @@ public class AIMovementBehaviour : MonoBehaviour
         {
             SetWanderDestination();
         }
-        yield return new WaitForSeconds(Random.Range(5, 20));
+        yield return new WaitForSeconds(Random.Range(1, 20));
         isWanderingCoroutineRunning = false;
-
     }
     public IEnumerator Eating()
     {
         isEatingCoroutineRunning = true;
-        SetNeedsDestination(GetFoodArea());
-        if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
-        {
-            SetNeedsDestination(GetFoodArea());
-        }
-        yield return new WaitForSeconds(Random.Range(5, 20));
-        isEatingCoroutineRunning = false;
+        SetNeedsDestination(food.position);
 
+        while (Vector3.Distance(transform.position, food.position) > 1)
+        {
+            yield return null; // Wait until the NPC is close to the food position
+        }
+
+        isEating = true;
+        yield return new WaitForSeconds(30);
+        isEatingCoroutineRunning = false;
+        isEating = false;
     }
+
     public IEnumerator Playing()
     {
         isPlayingCoroutineRunning = true;
-        SetNeedsDestination(GetPlayArea());
+        SetNeedsDestination(entertainment.position);
 
-        if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
+        while (Vector3.Distance(transform.position, entertainment.position) > 1f)
         {
-            SetNeedsDestination(GetPlayArea());
+            yield return null; // Wait until the NPC is close to the entertainment position
         }
-        yield return new WaitForSeconds(Random.Range(5, 20));
-        isPlayingCoroutineRunning = false;
 
+        isPlaying = true;
+        yield return new WaitForSeconds(30);
+        isPlayingCoroutineRunning = false;
+        isPlaying = false;
     }
+
     public IEnumerator Working()
     {
         isWorkingCoroutineRunning = true;
-        SetNeedsDestination(GetWorkArea());
+        SetNeedsDestination(work.position);
 
-        if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
+        while (Vector3.Distance(transform.position, work.position) > 1f)
         {
-            SetNeedsDestination(GetWorkArea());
+            yield return null; // Wait until the NPC is close to the work position
         }
-        yield return new WaitForSeconds(Random.Range(5, 20));
-        isWorkingCoroutineRunning = true;
 
+        isWorking = true;
+        yield return new WaitForSeconds(30);
+ 
+        isWorkingCoroutineRunning = false;
+        isWorking = false;
     }
     private void CheckMoving()
     {
@@ -106,47 +120,48 @@ public class AIMovementBehaviour : MonoBehaviour
             npcAnimator.SetBool("Walking", false);
         }
     }
-    public Vector3 GetFoodArea()
-    {
-        Vector3 randomPoint = Vector3.zero;
-        Vector3 randomDirection = Random.insideUnitSphere * maxDistance;
-        randomDirection += transform.position;
+    //I tried to be cool, but navmesh didnt wanted to get a random area in the index i especified, so i was forced to be normal and use a transform :(
+    /* public Vector3 GetFoodArea()
+     {
+         Vector3 randomPoint = Vector3.zero;
+         Vector3 randomDirection = Random.insideUnitSphere * maxDistance;
+         randomDirection += transform.position;
 
-        NavMeshHit hit;
-        if (NavMesh.SamplePosition(randomDirection, out hit, 100.0f, NavMesh.GetAreaFromName("Eating Area")))
-        {
-            Debug.Log(NavMesh.GetAreaFromName("Eating Area"));
-            randomPoint = hit.position;
-            Debug.Log(randomPoint);
-        }
-        return randomPoint;
-    }
-    public Vector3 GetPlayArea()
-    {
-        Vector3 randomPoint = Vector3.zero;
-        Vector3 randomDirection = Random.insideUnitSphere * maxDistance;
-        randomDirection += transform.position;
+         NavMeshHit hit;
+         if (NavMesh.SamplePosition(randomDirection, out hit, 10.0f,1))
+         {
+             Debug.Log(NavMesh.GetAreaFromName("Eating Area"));
+             randomPoint = hit.position;
+             Debug.Log(randomPoint);
+         }
+         return randomPoint;
+     }
+     public Vector3 GetPlayArea()
+     {
+         Vector3 randomPoint = Vector3.zero;
+         Vector3 randomDirection = Random.insideUnitSphere * maxDistance;
+         randomDirection += transform.position;
 
-        NavMeshHit hit;
-        if (NavMesh.SamplePosition(randomDirection, out hit, 10.0f, NavMesh.GetAreaFromName("Play Area")))
-        {
-            Debug.Log(NavMesh.GetAreaFromName("Play Area"));
-            randomPoint = hit.position;
-        }
-        return randomPoint;
-    }
-    public Vector3 GetWorkArea()
-    {
-        Vector3 randomPoint = Vector3.zero;
-        Vector3 randomDirection = Random.insideUnitSphere * maxDistance;
-        randomDirection += transform.position;
+         NavMeshHit hit;
+         if (NavMesh.SamplePosition(randomDirection, out hit, 10.0f, 4))
+         {
+             Debug.Log(NavMesh.GetAreaFromName("Play Area"));
+             randomPoint = hit.position;
+         }
+         return randomPoint;
+     }
+     public Vector3 GetWorkArea()
+     {
+         Vector3 randomPoint = Vector3.zero;
+         Vector3 randomDirection = Random.insideUnitSphere * maxDistance;
+         randomDirection += transform.position;
 
-        NavMeshHit hit;
-        if (NavMesh.SamplePosition(randomDirection, out hit, 10.0f, NavMesh.GetAreaFromName("Work Area")))
-        {
-            Debug.Log(NavMesh.GetAreaFromName("Work Area"));
-            randomPoint = hit.position;
-        }
-        return randomPoint;
-    }
+         NavMeshHit hit;
+         if (NavMesh.SamplePosition(randomDirection, out hit, 10.0f, 5))
+         {
+             Debug.Log(NavMesh.GetAreaFromName("Work Area"));
+             randomPoint = hit.position;
+         }
+         return randomPoint;
+     }*/
 }
