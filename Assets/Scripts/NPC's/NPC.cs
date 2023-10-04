@@ -27,34 +27,32 @@ namespace OpenAI
             hungerThreshold = Random.Range(0, hunger / 4);
             boredomThreshold = Random.Range(0, entertained / 5);
             fullfilmentThreshold = Random.Range(0, maxFullfilment / 6);
-            Debug.Log(hungerThreshold);
             base.Start();
 
         }
         public void Update()
         {
-            if (Hungry() && !npcMovement.isEatingCoroutineRunning)
+            if (Hungry() && !npcMovement.isPlayingCoroutineRunning && !npcMovement.isWorkingCoroutineRunning && !npcMovement.isEatingCoroutineRunning)
             {
-                npcMovement.StopCoroutine(npcMovement.RandomWalk());
+
                 npcMovement.StartCoroutine(npcMovement.Eating());
 
             }
-            if (Bored() && !npcMovement.isPlayingCoroutineRunning)
+            if (Bored() && !npcMovement.isPlayingCoroutineRunning && !npcMovement.isWorkingCoroutineRunning && !npcMovement.isEatingCoroutineRunning)
             {
-                npcMovement.StopCoroutine(npcMovement.RandomWalk());
                 npcMovement.StartCoroutine(npcMovement.Playing());
 
             }
-            if (NotFullfiled() && !npcMovement.isWorkingCoroutineRunning)
+            if (NotFullfiled() && !npcMovement.isPlayingCoroutineRunning && !npcMovement.isWorkingCoroutineRunning && !npcMovement.isEatingCoroutineRunning)
             {
-                npcMovement.StopCoroutine(npcMovement.RandomWalk());
                 npcMovement.StartCoroutine(npcMovement.Working());
 
             }
-            if (Hungry() == false && Bored() == false && NotFullfiled() == false && !npcMovement.isWanderingCoroutineRunning && !npcMovement.isPlayingCoroutineRunning && !npcMovement.isWorkingCoroutineRunning)
+            if (!Hungry() && !Bored() && !NotFullfiled() && !npcMovement.isWanderingCoroutineRunning && !npcMovement.isPlayingCoroutineRunning && !npcMovement.isWorkingCoroutineRunning && !npcMovement.isEatingCoroutineRunning)
             {
                 npcMovement.StartCoroutine(npcMovement.RandomWalk());
             }
+            else StopCoroutine(npcMovement.RandomWalk());
 
 
         }
@@ -71,7 +69,6 @@ namespace OpenAI
             }
             if (hunger <= hungerThreshold)
             {
-                // Debug.Log("Hungry");
                 return true;
             }
             else return false;
@@ -90,9 +87,7 @@ namespace OpenAI
             }
             if (entertained <= boredomThreshold)
             {
-                Debug.Log("Bored");
                 return true;
-
             }
             else return false;
         }
@@ -109,7 +104,6 @@ namespace OpenAI
             }
             if (fullfilment <= fullfilmentThreshold)
             {
-                Debug.Log(" Not Fullfiled");
                 return true;
             }
             else return false;

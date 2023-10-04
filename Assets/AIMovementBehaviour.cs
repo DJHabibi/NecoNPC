@@ -9,8 +9,9 @@ public class AIMovementBehaviour : MonoBehaviour
 {
     private NavMeshAgent navMeshAgent;
     public float maxDistance;
+    public float areaWidth, areaHeight;
     public Animator npcAnimator;
-
+    public GameObject apple;
     public bool isEatingCoroutineRunning = false;
     public bool isPlayingCoroutineRunning = false;
     public bool isWorkingCoroutineRunning = false;
@@ -23,6 +24,7 @@ public class AIMovementBehaviour : MonoBehaviour
     private void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
+        apple.SetActive(false);
     }
     public void Update()
     {
@@ -58,37 +60,45 @@ public class AIMovementBehaviour : MonoBehaviour
         {
             SetWanderDestination();
         }
-        yield return new WaitForSeconds(Random.Range(1, 20));
+        yield return new WaitForSeconds(Random.Range(5, 15));
         isWanderingCoroutineRunning = false;
     }
     public IEnumerator Eating()
     {
         isEatingCoroutineRunning = true;
-        SetNeedsDestination(food.position);
+        Vector3 Area = new Vector3(Random.Range(food.position.x-areaWidth, food.position.x+areaWidth),food.position.y, Random.Range(food.position.z - areaHeight, food.position.z + areaHeight));
+        SetNeedsDestination(Area);
 
-        while (Vector3.Distance(transform.position, food.position) > 1)
+        while (Vector3.Distance(transform.position, Area) > 1)
         {
             yield return null; // Wait until the NPC is close to the food position
         }
 
         isEating = true;
-        yield return new WaitForSeconds(30);
+        npcAnimator.SetBool("Eating", true);
+        apple.SetActive(true);
+        yield return new WaitForSeconds(25);
         isEatingCoroutineRunning = false;
         isEating = false;
+        apple.SetActive(false);
+        npcAnimator.SetBool("Eating", false);
     }
 
     public IEnumerator Playing()
     {
         isPlayingCoroutineRunning = true;
-        SetNeedsDestination(entertainment.position);
+        Vector3 Area = new Vector3(Random.Range(entertainment.position.x - areaWidth, entertainment.position.x + areaWidth), entertainment.position.y, Random.Range(entertainment.position.z - areaHeight, entertainment.position.z + areaHeight));
+        SetNeedsDestination(Area);
 
-        while (Vector3.Distance(transform.position, entertainment.position) > 1f)
+        while (Vector3.Distance(transform.position, Area) > 1f)
         {
             yield return null; // Wait until the NPC is close to the entertainment position
         }
 
         isPlaying = true;
-        yield return new WaitForSeconds(30);
+        npcAnimator.SetBool("Playing", true);
+        yield return new WaitForSeconds(25);
+        npcAnimator.SetBool("Playing", false);
         isPlayingCoroutineRunning = false;
         isPlaying = false;
     }
@@ -96,18 +106,21 @@ public class AIMovementBehaviour : MonoBehaviour
     public IEnumerator Working()
     {
         isWorkingCoroutineRunning = true;
-        SetNeedsDestination(work.position);
+        Vector3 Area = new Vector3(Random.Range(work.position.x - areaWidth, work.position.x + areaWidth), work.position.y, Random.Range(work.position.z - areaHeight, work.position.z + areaHeight));
+        SetNeedsDestination(Area);
 
-        while (Vector3.Distance(transform.position, work.position) > 1f)
+        while (Vector3.Distance(transform.position, Area) > 1f)
         {
             yield return null; // Wait until the NPC is close to the work position
         }
 
         isWorking = true;
-        yield return new WaitForSeconds(30);
+        npcAnimator.SetBool("Working", true);
+        yield return new WaitForSeconds(25);
  
         isWorkingCoroutineRunning = false;
         isWorking = false;
+        npcAnimator.SetBool("Working", false);
     }
     private void CheckMoving()
     {
