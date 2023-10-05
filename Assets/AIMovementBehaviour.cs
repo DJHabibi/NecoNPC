@@ -11,7 +11,7 @@ public class AIMovementBehaviour : MonoBehaviour
     public float maxDistance;
     public float areaWidth, areaHeight;
     public Animator npcAnimator;
-    public GameObject apple;
+    public GameObject PILK;
     public bool isEatingCoroutineRunning = false;
     public bool isPlayingCoroutineRunning = false;
     public bool isWorkingCoroutineRunning = false;
@@ -24,7 +24,7 @@ public class AIMovementBehaviour : MonoBehaviour
     private void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
-        apple.SetActive(false);
+        PILK.SetActive(false);
     }
     public void Update()
     {
@@ -76,11 +76,11 @@ public class AIMovementBehaviour : MonoBehaviour
 
         isEating = true;
         npcAnimator.SetBool("Eating", true);
-        apple.SetActive(true);
+        PILK.SetActive(true);
         yield return new WaitForSeconds(25);
         isEatingCoroutineRunning = false;
         isEating = false;
-        apple.SetActive(false);
+        PILK.SetActive(false);
         npcAnimator.SetBool("Eating", false);
     }
 
