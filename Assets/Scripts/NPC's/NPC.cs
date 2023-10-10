@@ -14,7 +14,7 @@ namespace OpenAI
         [SerializeField] public float hungerSpeed;
         [SerializeField] public float entertainedLoss;
         [SerializeField] public float fullfilmentLoss;
-        private float hungerThreshold, boredomThreshold, fullfilmentThreshold;
+        public float hungerThreshold, boredomThreshold, fullfilmentThreshold;
         private float baseHungerSpeed, baseentertainedLossSpeed, baseFullfilmentLossSpeed;
         public float maxFullfilment;
         public override void Start()
