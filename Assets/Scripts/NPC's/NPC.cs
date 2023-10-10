@@ -17,44 +17,39 @@ namespace OpenAI
         public float hungerThreshold, boredomThreshold, fullfilmentThreshold;
         private float baseHungerSpeed, baseentertainedLossSpeed, baseFullfilmentLossSpeed;
         public float maxFullfilment;
+
+        private Node topNode;
         public override void Start()
         {
+            npcMovement = GetComponent<AIMovementBehaviour>();
+            ConstructBehaviourTree();
             baseHungerSpeed = hungerSpeed;
             baseentertainedLossSpeed = entertainedLoss;
             baseFullfilmentLossSpeed = fullfilmentLoss;
 
-            npcMovement = GetComponent<AIMovementBehaviour>();
             hungerThreshold = Random.Range(0, hunger / 4);
             boredomThreshold = Random.Range(0, entertained / 5);
             fullfilmentThreshold = Random.Range(0, maxFullfilment / 6);
             base.Start();
 
         }
+
+        private void ConstructBehaviourTree()
+        {
+            HungerNode hungerNode = new HungerNode(this, hungerThreshold,npcMovement);
+            BoredNode boredNode = new BoredNode(this, boredomThreshold, npcMovement);
+            WorkNode workNode = new WorkNode(this, fullfilmentThreshold,npcMovement);
+            WanderNode wanderNode = new WanderNode(this, npcMovement);
+
+            topNode = new Selector(new List<Node> { hungerNode, boredNode, workNode, wanderNode });
+        }
+
         public void Update()
         {
-            if (Hungry() && !npcMovement.isPlayingCoroutineRunning && !npcMovement.isWorkingCoroutineRunning && !npcMovement.isEatingCoroutineRunning)
-            {
-
-                npcMovement.StartCoroutine(npcMovement.Eating());
-
-            }
-            if (Bored() && !npcMovement.isPlayingCoroutineRunning && !npcMovement.isWorkingCoroutineRunning && !npcMovement.isEatingCoroutineRunning)
-            {
-                npcMovement.StartCoroutine(npcMovement.Playing());
-
-            }
-            if (NotFullfiled() && !npcMovement.isPlayingCoroutineRunning && !npcMovement.isWorkingCoroutineRunning && !npcMovement.isEatingCoroutineRunning)
-            {
-                npcMovement.StartCoroutine(npcMovement.Working());
-
-            }
-            if (!Hungry() && !Bored() && !NotFullfiled() && !npcMovement.isWanderingCoroutineRunning && !npcMovement.isPlayingCoroutineRunning && !npcMovement.isWorkingCoroutineRunning && !npcMovement.isEatingCoroutineRunning)
-            {
-                npcMovement.StartCoroutine(npcMovement.RandomWalk());
-            }
-            else StopCoroutine(npcMovement.RandomWalk());
-
-
+            Hungry();
+            Bored();
+            NotFullfiled();
+            topNode.Evaluate();
         }
         public bool Hungry()
         {

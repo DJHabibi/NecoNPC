@@ -2210,10 +2210,13 @@ MonoBehaviour:
   camera: {fileID: 0}
   hunger: 100
   entertained: 100
-  fullfilment: 4
+  fullfilment: 20
   hungerSpeed: 0.5
   entertainedLoss: 0.2
   fullfilmentLoss: 0.2
+  hungerThreshold: 0
+  boredomThreshold: 0
+  fullfilmentThreshold: 0
   maxFullfilment: 120
 --- !u!65 &1139031887
 BoxCollider:
@@ -6409,11 +6412,14 @@ MonoBehaviour:
   agent: {fileID: 0}
   camera: {fileID: 0}
   hunger: 100
-  entertained: 5
+  entertained: 20
   fullfilment: 120
   hungerSpeed: 0.5
   entertainedLoss: 0.5
   fullfilmentLoss: 0.5
+  hungerThreshold: 0
+  boredomThreshold: 0
+  fullfilmentThreshold: 0
   maxFullfilment: 120
 --- !u!114 &9114707292705644059
 MonoBehaviour:

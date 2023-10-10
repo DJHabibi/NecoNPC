@@ -9,16 +9,41 @@ namespace OpenAI
         private NPC npc;
         private AIMovementBehaviour aIMovement;
         private float threshold;
-        public WorkNode(NPC npc, float threshold)
+
+        public WorkNode(NPC npc, float threshold, AIMovementBehaviour aIMovement)
         {
             this.npc = npc;
-            this.npc.fullfilmentThreshold = threshold;
+            this.threshold = threshold;
+            this.aIMovement = aIMovement;
         }
+
         // Start is called before the first frame update
         public override NodeState Evaluate()
         {
-            return npc.fullfilment <= threshold && !aIMovement.isEatingCoroutineRunning && !aIMovement.isWorkingCoroutineRunning && !aIMovement.isEatingCoroutineRunning ? NodeState.SUCCESS : NodeState.FAILURE;
+            if (npc == null || aIMovement == null)
+            {
+                Debug.LogError("NPC or AIMovementBehaviour is null in WorkNode.");
+                return NodeState.FAILURE;
+            }
+/*
+            Debug.Log("isEatingCoroutineRunning: " + aIMovement.isEatingCoroutineRunning);
+            Debug.Log("isWorkingCoroutineRunning: " + aIMovement.isWorkingCoroutineRunning);
+            Debug.Log("isPlayingCoroutineRunning: " + aIMovement.isPlayingCoroutineRunning);*/
+
+            // Check for fulfillment, coroutine flags, and return appropriate state.
+            if (npc.fullfilment <= threshold &&
+                !aIMovement.isEatingCoroutineRunning &&
+                !aIMovement.isWorkingCoroutineRunning &&
+                !aIMovement.isPlayingCoroutineRunning)
+            {
+                Debug.Log("WorkNode: SUCCESS");
+                aIMovement.StartCoroutine(aIMovement.Working());
+                return NodeState.SUCCESS;
+            }
+            else
+            {
+                return NodeState.FAILURE;
+            }
         }
     }
 }
-

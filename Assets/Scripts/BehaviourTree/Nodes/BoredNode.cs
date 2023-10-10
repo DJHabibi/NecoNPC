@@ -9,16 +9,36 @@ namespace OpenAI
         private NPC npc;
         private AIMovementBehaviour aIMovement;
         private float threshold;
-        public BoredNode(NPC npc, float threshold)
+
+        public BoredNode(NPC npc, float threshold, AIMovementBehaviour aIMovement)
         {
             this.npc = npc;
-            this.npc.boredomThreshold = threshold;
+            this.threshold = threshold;
+            this.aIMovement = aIMovement;
         }
+
         // Start is called before the first frame update
         public override NodeState Evaluate()
         {
-            return npc.entertained <= threshold && !aIMovement.isEatingCoroutineRunning && !aIMovement.isWorkingCoroutineRunning && !aIMovement.isEatingCoroutineRunning ? NodeState.SUCCESS : NodeState.FAILURE;
+            if (npc == null || aIMovement == null)
+            {
+                Debug.LogError("NPC or AIMovementBehaviour is null in BoredNode.");
+                return NodeState.FAILURE;
+            }
+
+            if (npc.entertained <= threshold &&
+                !aIMovement.isEatingCoroutineRunning &&
+                !aIMovement.isWorkingCoroutineRunning &&
+                !aIMovement.isPlayingCoroutineRunning)
+            {
+                Debug.Log("BoredNode: SUCCESS");
+                aIMovement.StartCoroutine(aIMovement.Playing());
+                return NodeState.SUCCESS;
+            }
+            else
+            {
+                return NodeState.FAILURE;
+            }
         }
     }
 }
-
