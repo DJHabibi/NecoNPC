@@ -19,7 +19,7 @@ namespace OpenAI
         GameObject player;
         [SerializeField] public ChatPrompt npcBehaviour;
         [SerializeField] Animator animator;
-        [SerializeField] GameObject canvas;
+        [SerializeField] GameObject message;
         [SerializeField] NavMeshAgent agent;
         [SerializeField] private CameraManager camera;
         private float agentDefaultSpeed;
@@ -27,7 +27,7 @@ namespace OpenAI
 
         public virtual void Start()
         {
-            canvas.SetActive(false);
+            message.SetActive(false);
             player = FindObjectOfType<PlayerMovement>().gameObject;
             agent = GetComponent<NavMeshAgent>();
             agentDefaultSpeed = agent.speed;
@@ -92,7 +92,7 @@ namespace OpenAI
             if (other.gameObject == player)
             {
                 isPlayerInsideTrigger = true;
-                canvas.SetActive(true);
+                message.SetActive(true);
                 inputField = GameObject.FindGameObjectWithTag("PlayerInputField").GetComponent<InputField>();
                 button = GameObject.FindGameObjectWithTag("PlayerButton").GetComponent<Button>();
                 button.onClick.AddListener(SendReply);
@@ -105,7 +105,7 @@ namespace OpenAI
             if (other.gameObject == player)
             {
                 isPlayerInsideTrigger = false;
-                canvas.SetActive(false);
+                message.SetActive(false);
                 inputField = null;
                 button.onClick.RemoveListener(SendReply);
                 button = null;

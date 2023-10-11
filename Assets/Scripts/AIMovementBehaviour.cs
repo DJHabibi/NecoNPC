@@ -12,6 +12,7 @@ public class AIMovementBehaviour : MonoBehaviour
     public float areaWidth, areaHeight;
     public Animator npcAnimator;
     public GameObject PILK;
+    public GameObject iconEat, iconPlay, iconWork;
     public bool isEatingCoroutineRunning = false;
     public bool isPlayingCoroutineRunning = false;
     public bool isWorkingCoroutineRunning = false;
@@ -25,6 +26,9 @@ public class AIMovementBehaviour : MonoBehaviour
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
         PILK.SetActive(false);
+        iconEat.SetActive(false);
+        iconPlay.SetActive(false);
+        iconWork.SetActive(false);
     }
     public void Update()
     {
@@ -66,6 +70,7 @@ public class AIMovementBehaviour : MonoBehaviour
     public IEnumerator Eating()
     {
         isEatingCoroutineRunning = true;
+        iconEat.SetActive(isEatingCoroutineRunning);
         Vector3 Area = new Vector3(Random.Range(food.position.x-areaWidth, food.position.x+areaWidth),food.position.y, Random.Range(food.position.z - areaHeight, food.position.z + areaHeight));
         SetNeedsDestination(Area);
 
@@ -80,6 +85,7 @@ public class AIMovementBehaviour : MonoBehaviour
         yield return new WaitForSeconds(25);
         isEatingCoroutineRunning = false;
         isEating = false;
+        iconEat.SetActive(isEatingCoroutineRunning);
         PILK.SetActive(false);
         npcAnimator.SetBool("Eating", false);
     }
@@ -87,6 +93,7 @@ public class AIMovementBehaviour : MonoBehaviour
     public IEnumerator Playing()
     {
         isPlayingCoroutineRunning = true;
+        iconPlay.SetActive(isPlayingCoroutineRunning);
         Vector3 Area = new Vector3(Random.Range(entertainment.position.x - areaWidth, entertainment.position.x + areaWidth), entertainment.position.y, Random.Range(entertainment.position.z - areaHeight, entertainment.position.z + areaHeight));
         SetNeedsDestination(Area);
 
@@ -100,13 +107,15 @@ public class AIMovementBehaviour : MonoBehaviour
         yield return new WaitForSeconds(25);
         npcAnimator.SetBool("Playing", false);
         isPlayingCoroutineRunning = false;
+        iconPlay.SetActive(isPlayingCoroutineRunning);
         isPlaying = false;
     }
 
     public IEnumerator Working()
     {
         isWorkingCoroutineRunning = true;
-        Vector3 Area = new Vector3(Random.Range(work.position.x - areaWidth, work.position.x + areaWidth), work.position.y, Random.Range(work.position.z - areaHeight, work.position.z + areaHeight));
+        iconWork.SetActive(isWorkingCoroutineRunning);
+       Vector3 Area = new Vector3(Random.Range(work.position.x - areaWidth, work.position.x + areaWidth), work.position.y, Random.Range(work.position.z - areaHeight, work.position.z + areaHeight));
         SetNeedsDestination(Area);
 
         while (Vector3.Distance(transform.position, Area) > 1f)
@@ -119,6 +128,7 @@ public class AIMovementBehaviour : MonoBehaviour
         yield return new WaitForSeconds(25);
  
         isWorkingCoroutineRunning = false;
+        iconWork.SetActive(isWorkingCoroutineRunning);
         isWorking = false;
         npcAnimator.SetBool("Working", false);
     }
