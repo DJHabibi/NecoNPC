@@ -37,6 +37,7 @@ namespace OpenAI
                 !aIMovement.isPlayingCoroutineRunning)
             {
                 Debug.Log("WorkNode: SUCCESS");
+                npc.UpdateState("STATUS UPDATE: YOU ARE NOW (working: context: you are training and practicing shadow boxing)");
                 aIMovement.StartCoroutine(aIMovement.Working());
                 return NodeState.SUCCESS;
             }

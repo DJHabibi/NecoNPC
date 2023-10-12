@@ -32,6 +32,7 @@ namespace OpenAI
                 !aIMovement.isPlayingCoroutineRunning)
             {
                 Debug.Log("BoredNode: SUCCESS");
+                npc.UpdateState("STATUS UPDATE: YOU ARE NOW (playing: context: you are dancing gangnam style)");
                 aIMovement.StartCoroutine(aIMovement.Playing());
                 return NodeState.SUCCESS;
             }

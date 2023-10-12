@@ -3,7 +3,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New NPC Behaviour", menuName = "NPC Behaviour")]
 public class ChatPrompt : ScriptableObject
 {
-   [SerializeField] public string NpcBehaviour;
+    [TextArea(15, 20)]
+    [SerializeField] public string NpcBehaviour;
 
     public string Content
     {

@@ -33,7 +33,8 @@ namespace OpenAI
                 !aIMovement.isPlayingCoroutineRunning)
             {
                 Debug.Log("HungerNode: SUCCESS");
-                aIMovement.StartCoroutine(aIMovement.Eating());
+                npc.UpdateState("STATUS UPDATE: YOU ARE NOW (eating: context: you are drinking pilk, pilk is the combination of pepsi and milk)");
+                aIMovement.StartCoroutine(aIMovement.Eating()); 
                 return NodeState.SUCCESS;
             }
             else

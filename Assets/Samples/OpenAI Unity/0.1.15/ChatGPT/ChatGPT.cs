@@ -87,6 +87,25 @@ namespace OpenAI
 
             button.enabled = true;
         }
+        public async void UpdateState(string state)
+        {
+            var newMessage = new ChatMessage()
+            {
+                Role = "user",
+                Content = state,
+            };
+
+            AppendMessage(newMessage);
+
+            messages.Add(newMessage);
+
+            // Complete the instruction
+            var completionResponse = await openai.CreateChatCompletion(new CreateChatCompletionRequest()
+            {
+                Model = "gpt-3.5-turbo-0613",
+                Messages = messages
+            });
+        }
         public virtual void OnTriggerEnter(Collider other)
         {
             if (other.gameObject == player)
