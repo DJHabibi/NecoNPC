@@ -68,7 +68,7 @@ public class AIMovementBehaviour : MonoBehaviour
         {
             SetWanderDestination();
         }
-        npc.UpdateState("STATUS UPDATE: YOU ARE NOW walking: context: you are walking around");
+        npc.UpdateState("STATUS UPDATE: you are walking: context: you are walking around");
         yield return new WaitForSeconds(Random.Range(5, 15));
         isWanderingCoroutineRunning = false;
     }
@@ -87,9 +87,9 @@ public class AIMovementBehaviour : MonoBehaviour
         isEating = true;
         npcAnimator.SetBool("Eating", true);
         PILK.SetActive(true);
-        npc.UpdateState("STATUS UPDATE: YOU ARE NOW eating: context: you are drinking pilk, pilk is the combination of pepsi and milk");
+        npc.UpdateState("STATUS UPDATE: you are eating: context: you are drinking pilk, pilk is the combination of pepsi and milk");
         yield return new WaitForSeconds(25);
-        npc.UpdateState( "STATUS UPDATE: YOU ARE NOW not eating: context: you are done drinking pilk");
+        npc.UpdateState("STATUS UPDATE: you are done eating: context: you are done drinking pilk");
         isEatingCoroutineRunning = false;
         isEating = false;
         iconEat.SetActive(isEatingCoroutineRunning);
@@ -111,9 +111,9 @@ public class AIMovementBehaviour : MonoBehaviour
 
         isPlaying = true;
         npcAnimator.SetBool("Playing", true);
-        npc.UpdateState("STATUS UPDATE: YOU ARE NOW playing: context: you are dancing gangnam style");
+        npc.UpdateState("STATUS UPDATE: you are dancing: context: you are dancing gangnam style");
         yield return new WaitForSeconds(25);
-        npc.UpdateState("STATUS UPDATE: YOU ARE NOW not playing: context: you finished dancing gangnam style");
+        npc.UpdateState("STATUS UPDATE: you are done dancing: context: you finished dancing gangnam style");
         npcAnimator.SetBool("Playing", false);
         isPlayingCoroutineRunning = false;
         iconPlay.SetActive(isPlayingCoroutineRunning);
@@ -134,9 +134,9 @@ public class AIMovementBehaviour : MonoBehaviour
 
         isWorking = true;
         npcAnimator.SetBool("Working", true);
-        npc.UpdateState( "STATUS UPDATE: YOU ARE NOW working: context: you are training and practicing shadow boxing");
+        npc.UpdateState("STATUS UPDATE: you are working: context: you are training and practicing shadow boxing");
         yield return new WaitForSeconds(25);
-        npc.UpdateState( "STATUS UPDATE: YOU ARE NOW not working: context: you are done training and practicing shadow boxing");
+        npc.UpdateState("STATUS UPDATE: you are not working: context: you are done training and practicing shadow boxing");
         isWorkingCoroutineRunning = false;
         iconWork.SetActive(isWorkingCoroutineRunning);
         isWorking = false;

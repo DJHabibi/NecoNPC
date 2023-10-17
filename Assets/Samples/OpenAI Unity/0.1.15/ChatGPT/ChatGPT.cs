@@ -15,7 +15,6 @@ namespace OpenAI
         private float height;
         private OpenAIApi openai = new OpenAIApi();
         private List<ChatMessage> messages = new List<ChatMessage>();
-
         GameObject player;
         [SerializeField] public ChatPrompt npcBehaviour;
         [SerializeField] Animator animator;
