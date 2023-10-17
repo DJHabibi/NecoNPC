@@ -2301,6 +2301,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72ba7b5716e32eb4c8a0138e3632b630, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  prompt: {fileID: 11400000, guid: 7fda970f2c79ceb44ada135d3ea03e86, type: 2}
   maxDistance: 20
   areaWidth: 3
   areaHeight: 3
@@ -2358,7 +2359,7 @@ MonoBehaviour:
   scroll: {fileID: 1163351584}
   sent: {fileID: 8660877164928630359, guid: 53cd26a6eefa5a74086203cd118a04d3, type: 3}
   received: {fileID: 961534450149497043, guid: adc0146c2853ed1418133faaf4379eb1, type: 3}
-  npcBehaviour: {fileID: 11400000, guid: 2ce75626b9cba91469ea76d037f9a658, type: 2}
+  npcBehaviour: {fileID: 11400000, guid: 7fda970f2c79ceb44ada135d3ea03e86, type: 2}
   animator: {fileID: 836887993}
   message: {fileID: 1142011849}
   agent: {fileID: 0}
@@ -6945,7 +6946,7 @@ MonoBehaviour:
   scroll: {fileID: 1772058114003670524}
   sent: {fileID: 8660877164928630359, guid: 53cd26a6eefa5a74086203cd118a04d3, type: 3}
   received: {fileID: 961534450149497043, guid: adc0146c2853ed1418133faaf4379eb1, type: 3}
-  npcBehaviour: {fileID: 11400000, guid: 2ce75626b9cba91469ea76d037f9a658, type: 2}
+  npcBehaviour: {fileID: 11400000, guid: 7fda970f2c79ceb44ada135d3ea03e86, type: 2}
   animator: {fileID: 751860457}
   message: {fileID: 1772058113600459036}
   agent: {fileID: 0}
@@ -6972,6 +6973,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72ba7b5716e32eb4c8a0138e3632b630, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  prompt: {fileID: 11400000, guid: 7fda970f2c79ceb44ada135d3ea03e86, type: 2}
   maxDistance: 20
   areaWidth: 3
   areaHeight: 3

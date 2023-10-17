@@ -1,3 +1,4 @@
+using OpenAI;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,6 +9,8 @@ using Random = UnityEngine.Random;
 public class AIMovementBehaviour : MonoBehaviour
 {
     private NavMeshAgent navMeshAgent;
+   private NPC npc;
+   public ChatPrompt prompt;
     public float maxDistance;
     public float areaWidth, areaHeight;
     public Animator npcAnimator;
@@ -24,6 +27,7 @@ public class AIMovementBehaviour : MonoBehaviour
 
     private void Start()
     {
+        npc = GetComponent<NPC>();
         navMeshAgent = GetComponent<NavMeshAgent>();
         PILK.SetActive(false);
         iconEat.SetActive(false);
@@ -64,6 +68,7 @@ public class AIMovementBehaviour : MonoBehaviour
         {
             SetWanderDestination();
         }
+        npc.UpdateState("STATUS UPDATE: YOU ARE NOW walking: context: you are walking around");
         yield return new WaitForSeconds(Random.Range(5, 15));
         isWanderingCoroutineRunning = false;
     }
@@ -82,7 +87,9 @@ public class AIMovementBehaviour : MonoBehaviour
         isEating = true;
         npcAnimator.SetBool("Eating", true);
         PILK.SetActive(true);
+        npc.UpdateState("STATUS UPDATE: YOU ARE NOW eating: context: you are drinking pilk, pilk is the combination of pepsi and milk");
         yield return new WaitForSeconds(25);
+        npc.UpdateState( "STATUS UPDATE: YOU ARE NOW not eating: context: you are done drinking pilk");
         isEatingCoroutineRunning = false;
         isEating = false;
         iconEat.SetActive(isEatingCoroutineRunning);
@@ -104,7 +111,9 @@ public class AIMovementBehaviour : MonoBehaviour
 
         isPlaying = true;
         npcAnimator.SetBool("Playing", true);
+        npc.UpdateState("STATUS UPDATE: YOU ARE NOW playing: context: you are dancing gangnam style");
         yield return new WaitForSeconds(25);
+        npc.UpdateState("STATUS UPDATE: YOU ARE NOW not playing: context: you finished dancing gangnam style");
         npcAnimator.SetBool("Playing", false);
         isPlayingCoroutineRunning = false;
         iconPlay.SetActive(isPlayingCoroutineRunning);
@@ -125,8 +134,9 @@ public class AIMovementBehaviour : MonoBehaviour
 
         isWorking = true;
         npcAnimator.SetBool("Working", true);
+        npc.UpdateState( "STATUS UPDATE: YOU ARE NOW working: context: you are training and practicing shadow boxing");
         yield return new WaitForSeconds(25);
- 
+        npc.UpdateState( "STATUS UPDATE: YOU ARE NOW not working: context: you are done training and practicing shadow boxing");
         isWorkingCoroutineRunning = false;
         iconWork.SetActive(isWorkingCoroutineRunning);
         isWorking = false;
@@ -143,48 +153,5 @@ public class AIMovementBehaviour : MonoBehaviour
             npcAnimator.SetBool("Walking", false);
         }
     }
-    //I tried to be cool, but navmesh didnt wanted to get a random area in the index i especified, so i was forced to be normal and use a transform :(
-    /* public Vector3 GetFoodArea()
-     {
-         Vector3 randomPoint = Vector3.zero;
-         Vector3 randomDirection = Random.insideUnitSphere * maxDistance;
-         randomDirection += transform.position;
 
-         NavMeshHit hit;
-         if (NavMesh.SamplePosition(randomDirection, out hit, 10.0f,1))
-         {
-             Debug.Log(NavMesh.GetAreaFromName("Eating Area"));
-             randomPoint = hit.position;
-             Debug.Log(randomPoint);
-         }
-         return randomPoint;
-     }
-     public Vector3 GetPlayArea()
-     {
-         Vector3 randomPoint = Vector3.zero;
-         Vector3 randomDirection = Random.insideUnitSphere * maxDistance;
-         randomDirection += transform.position;
-
-         NavMeshHit hit;
-         if (NavMesh.SamplePosition(randomDirection, out hit, 10.0f, 4))
-         {
-             Debug.Log(NavMesh.GetAreaFromName("Play Area"));
-             randomPoint = hit.position;
-         }
-         return randomPoint;
-     }
-     public Vector3 GetWorkArea()
-     {
-         Vector3 randomPoint = Vector3.zero;
-         Vector3 randomDirection = Random.insideUnitSphere * maxDistance;
-         randomDirection += transform.position;
-
-         NavMeshHit hit;
-         if (NavMesh.SamplePosition(randomDirection, out hit, 10.0f, 5))
-         {
-             Debug.Log(NavMesh.GetAreaFromName("Work Area"));
-             randomPoint = hit.position;
-         }
-         return randomPoint;
-     }*/
 }
