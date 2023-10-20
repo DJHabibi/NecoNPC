@@ -2307,19 +2307,22 @@ MonoBehaviour:
   areaHeight: 3
   npcAnimator: {fileID: 836887993}
   PILK: {fileID: 1820443189}
+  npc1: {fileID: 5607285598383658037}
   iconEat: {fileID: 172410107}
   iconPlay: {fileID: 2101175408}
   iconWork: {fileID: 39176571}
+  food: {fileID: 2116739669}
+  entertainment: {fileID: 736998419}
+  work: {fileID: 213999189}
   isEatingCoroutineRunning: 0
   isPlayingCoroutineRunning: 0
   isWorkingCoroutineRunning: 0
   isWanderingCoroutineRunning: 0
-  food: {fileID: 2116739669}
-  entertainment: {fileID: 736998419}
-  work: {fileID: 213999189}
+  isChattingCoroutineRunning: 0
   isPlaying: 0
   isWorking: 0
   isEating: 0
+  isChatting: 0
 --- !u!195 &1139031885
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2366,13 +2369,16 @@ MonoBehaviour:
   camera: {fileID: 0}
   hunger: 100
   entertained: 100
-  fullfilment: 20
+  fullfilment: 100
+  socialNeed: 100
   hungerSpeed: 0.5
   entertainedLoss: 0.2
   fullfilmentLoss: 0.2
+  socialNeedLoss: 0.5
   hungerThreshold: 0
   boredomThreshold: 0
   fullfilmentThreshold: 0
+  socialNeedThreshold: 0
   maxFullfilment: 120
 --- !u!65 &1139031887
 BoxCollider:
@@ -6952,14 +6958,17 @@ MonoBehaviour:
   agent: {fileID: 0}
   camera: {fileID: 0}
   hunger: 100
-  entertained: 20
+  entertained: 100
   fullfilment: 120
+  socialNeed: 5
   hungerSpeed: 0.5
   entertainedLoss: 0.5
   fullfilmentLoss: 0.5
+  socialNeedLoss: 0.5
   hungerThreshold: 0
   boredomThreshold: 0
   fullfilmentThreshold: 0
+  socialNeedThreshold: 0
   maxFullfilment: 120
 --- !u!114 &9114707292705644059
 MonoBehaviour:
@@ -6979,19 +6988,22 @@ MonoBehaviour:
   areaHeight: 3
   npcAnimator: {fileID: 751860457}
   PILK: {fileID: 1389234110}
+  npc1: {fileID: 1139031888}
   iconEat: {fileID: 2066033062}
   iconPlay: {fileID: 2072450589}
   iconWork: {fileID: 1372750783}
+  food: {fileID: 2116739669}
+  entertainment: {fileID: 736998419}
+  work: {fileID: 213999189}
   isEatingCoroutineRunning: 0
   isPlayingCoroutineRunning: 0
   isWorkingCoroutineRunning: 0
   isWanderingCoroutineRunning: 0
-  food: {fileID: 2116739669}
-  entertainment: {fileID: 736998419}
-  work: {fileID: 213999189}
+  isChattingCoroutineRunning: 0
   isPlaying: 0
   isWorking: 0
   isEating: 0
+  isChatting: 0
 --- !u!195 &9114707292705644060
 NavMeshAgent:
   m_ObjectHideFlags: 0

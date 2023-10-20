@@ -11,11 +11,13 @@ namespace OpenAI
         [SerializeField] public float hunger;
         [SerializeField] public float entertained;
         [SerializeField] public float fullfilment;
+        [SerializeField] public float socialNeed;
         [SerializeField] public float hungerSpeed;
         [SerializeField] public float entertainedLoss;
         [SerializeField] public float fullfilmentLoss;
-        public float hungerThreshold, boredomThreshold, fullfilmentThreshold;
-        private float baseHungerSpeed, baseentertainedLossSpeed, baseFullfilmentLossSpeed;
+        [SerializeField] public float socialNeedLoss;
+        public float hungerThreshold, boredomThreshold, fullfilmentThreshold, socialNeedThreshold;
+        private float baseHungerSpeed, baseentertainedLossSpeed, baseFullfilmentLossSpeed, basesocialNeedLoss;
         public float maxFullfilment;
 
         private Node topNode;
@@ -26,9 +28,11 @@ namespace OpenAI
             baseHungerSpeed = hungerSpeed;
             baseentertainedLossSpeed = entertainedLoss;
             baseFullfilmentLossSpeed = fullfilmentLoss;
+            basesocialNeedLoss = socialNeedLoss;
 
             hungerThreshold = Random.Range(0, hunger / 4);
             boredomThreshold = Random.Range(0, entertained / 5);
+            socialNeed = Random.Range(0, socialNeed / 5);
             fullfilmentThreshold = Random.Range(0, maxFullfilment / 6);
             base.Start();
 
@@ -36,12 +40,13 @@ namespace OpenAI
 
         private void ConstructBehaviourTree()
         {
-            HungerNode hungerNode = new HungerNode(this, hungerThreshold,npcMovement);
+            HungerNode hungerNode = new HungerNode(this, hungerThreshold, npcMovement);
             BoredNode boredNode = new BoredNode(this, boredomThreshold, npcMovement);
-            WorkNode workNode = new WorkNode(this, fullfilmentThreshold,npcMovement);
+            WorkNode workNode = new WorkNode(this, fullfilmentThreshold, npcMovement);
             WanderNode wanderNode = new WanderNode(this, npcMovement);
+            ChatNode chatNode = new ChatNode(this,socialNeedThreshold, npcMovement);
 
-            topNode = new Selector(new List<Node> { hungerNode, boredNode, workNode, wanderNode });
+            topNode = new Selector(new List<Node> { hungerNode, boredNode, workNode, wanderNode,chatNode });
         }
 
         public void Update()
@@ -49,6 +54,7 @@ namespace OpenAI
             Hungry();
             Bored();
             NotFullfiled();
+            Social();
             topNode.Evaluate();
         }
         public bool Hungry()
@@ -63,6 +69,24 @@ namespace OpenAI
                 hunger = 0;
             }
             if (hunger <= hungerThreshold)
+            {
+                return true;
+            }
+            else return false;
+
+        }
+        public bool Social()
+        {
+            if (!npcMovement.isChatting)
+            {
+                socialNeed -= socialNeedLoss * Time.deltaTime;
+            }
+            else socialNeed += socialNeedLoss * 4 * Time.deltaTime;
+            if (socialNeed < 0)
+            {
+                socialNeed = 0;
+            }
+            if (socialNeed <= socialNeedThreshold)
             {
                 return true;
             }
@@ -116,7 +140,7 @@ namespace OpenAI
             base.OnTriggerStay(other);
         }
 
-       
+
     }
 }
 

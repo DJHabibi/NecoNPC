@@ -9,21 +9,26 @@ using Random = UnityEngine.Random;
 public class AIMovementBehaviour : MonoBehaviour
 {
     private NavMeshAgent navMeshAgent;
-   private NPC npc;
-   public ChatPrompt prompt;
+    private NPC npc;
+    public ChatPrompt prompt;
     public float maxDistance;
     public float areaWidth, areaHeight;
     public Animator npcAnimator;
     public GameObject PILK;
+    public Transform npc1;
     public GameObject iconEat, iconPlay, iconWork;
+    [SerializeField] public Transform food, entertainment, work;
     public bool isEatingCoroutineRunning = false;
     public bool isPlayingCoroutineRunning = false;
     public bool isWorkingCoroutineRunning = false;
     public bool isWanderingCoroutineRunning = false;
-    [SerializeField] public Transform food, entertainment, work;
+    public bool isChattingCoroutineRunning;
+
     public bool isPlaying;
     public bool isWorking;
     public bool isEating;
+    public bool isChatting;
+
 
     private void Start()
     {
@@ -76,7 +81,7 @@ public class AIMovementBehaviour : MonoBehaviour
     {
         isEatingCoroutineRunning = true;
         iconEat.SetActive(isEatingCoroutineRunning);
-        Vector3 Area = new Vector3(Random.Range(food.position.x-areaWidth, food.position.x+areaWidth),food.position.y, Random.Range(food.position.z - areaHeight, food.position.z + areaHeight));
+        Vector3 Area = new Vector3(Random.Range(food.position.x - areaWidth, food.position.x + areaWidth), food.position.y, Random.Range(food.position.z - areaHeight, food.position.z + areaHeight));
         SetNeedsDestination(Area);
 
         while (Vector3.Distance(transform.position, Area) > 1)
@@ -124,7 +129,7 @@ public class AIMovementBehaviour : MonoBehaviour
     {
         isWorkingCoroutineRunning = true;
         iconWork.SetActive(isWorkingCoroutineRunning);
-       Vector3 Area = new Vector3(Random.Range(work.position.x - areaWidth, work.position.x + areaWidth), work.position.y, Random.Range(work.position.z - areaHeight, work.position.z + areaHeight));
+        Vector3 Area = new Vector3(Random.Range(work.position.x - areaWidth, work.position.x + areaWidth), work.position.y, Random.Range(work.position.z - areaHeight, work.position.z + areaHeight));
         SetNeedsDestination(Area);
 
         while (Vector3.Distance(transform.position, Area) > 1f)
@@ -141,6 +146,20 @@ public class AIMovementBehaviour : MonoBehaviour
         iconWork.SetActive(isWorkingCoroutineRunning);
         isWorking = false;
         npcAnimator.SetBool("Working", false);
+    }
+    public IEnumerator Chatting()
+    {
+        isChattingCoroutineRunning = true;
+        while (Vector3.Distance(transform.position, npc1.position) > 1f)
+        {
+            Vector3 Area = new Vector3(Random.Range(npc1.position.x - areaWidth, npc1.position.x + areaWidth), npc1.position.y, Random.Range(npc1.position.z - areaHeight, npc1.position.z + areaHeight));
+            SetNeedsDestination(Area);
+        }
+        isChatting = true;
+
+        yield return new WaitForSeconds(25);
+        isChatting = false;
+        isChattingCoroutineRunning = false;
     }
     private void CheckMoving()
     {
