@@ -29,10 +29,10 @@ namespace OpenAI
             // Check for hunger, coroutine flags, and return appropriate state.
             if (npc.hunger <= threshold &&
                 !aIMovement.isEatingCoroutineRunning &&
+                  !aIMovement.isChattingCoroutineRunning &&
                 !aIMovement.isWorkingCoroutineRunning &&
                 !aIMovement.isPlayingCoroutineRunning)
             {
-                Debug.Log("HungerNode: SUCCESS");
                 aIMovement.StopCoroutine(aIMovement.RandomWalk());
                 aIMovement.StartCoroutine(aIMovement.Eating()); 
                 return NodeState.SUCCESS;

@@ -33,6 +33,7 @@ namespace OpenAI
             // Check for fulfillment, coroutine flags, and return appropriate state.
             if (npc.socialNeed <= threshold &&
                 !aIMovement.isEatingCoroutineRunning &&
+                 !aIMovement.isChattingCoroutineRunning &&
                 !aIMovement.isWorkingCoroutineRunning &&
                 !aIMovement.isPlayingCoroutineRunning)
             {

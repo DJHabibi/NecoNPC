@@ -21,7 +21,7 @@ namespace OpenAI
         [SerializeField] GameObject message;
         [SerializeField] NavMeshAgent agent;
         [SerializeField] private CameraManager camera;
-        private float agentDefaultSpeed;
+        public float agentDefaultSpeed;
         private bool isPlayerInsideTrigger;
 
         public virtual void Start()
@@ -93,8 +93,6 @@ namespace OpenAI
                 Role = "user",
                 Content = npcBehaviour.NpcBehaviour +state,
             };
-
-            //AppendMessage(newMessage);
 
             messages.Add(newMessage);
 

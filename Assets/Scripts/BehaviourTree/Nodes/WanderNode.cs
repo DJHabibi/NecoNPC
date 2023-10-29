@@ -18,6 +18,7 @@ namespace OpenAI
             // Check for hunger, boredom, and fullfilment, in addition to coroutine flags.
             if (!aIMovement.isWanderingCoroutineRunning &&
                 !aIMovement.isEatingCoroutineRunning &&
+                  !aIMovement.isChattingCoroutineRunning &&
                 !aIMovement.isWorkingCoroutineRunning &&
                 !aIMovement.isPlayingCoroutineRunning &&
                 !npc.Hungry() && // Check for hunger

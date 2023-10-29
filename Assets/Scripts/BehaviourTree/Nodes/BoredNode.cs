@@ -28,10 +28,10 @@ namespace OpenAI
 
             if (npc.entertained <= threshold &&
                 !aIMovement.isEatingCoroutineRunning &&
+                 !aIMovement.isChattingCoroutineRunning &&
                 !aIMovement.isWorkingCoroutineRunning &&
                 !aIMovement.isPlayingCoroutineRunning)
             {
-                Debug.Log("BoredNode: SUCCESS");
                 aIMovement.StopCoroutine(aIMovement.RandomWalk());
                 aIMovement.StartCoroutine(aIMovement.Playing());
                 return NodeState.SUCCESS;

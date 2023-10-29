@@ -32,7 +32,7 @@ namespace OpenAI
 
             hungerThreshold = Random.Range(0, hunger / 4);
             boredomThreshold = Random.Range(0, entertained / 5);
-            socialNeed = Random.Range(0, socialNeed / 5);
+            socialNeedThreshold = Random.Range(0, socialNeed / 5);
             fullfilmentThreshold = Random.Range(0, maxFullfilment / 6);
             base.Start();
 

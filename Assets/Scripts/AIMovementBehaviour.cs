@@ -150,17 +150,37 @@ public class AIMovementBehaviour : MonoBehaviour
     public IEnumerator Chatting()
     {
         isChattingCoroutineRunning = true;
-        while (Vector3.Distance(transform.position, npc1.position) > 1f)
+        Vector3 area;
+        while (isChattingCoroutineRunning)
         {
-            Vector3 Area = new Vector3(Random.Range(npc1.position.x - areaWidth, npc1.position.x + areaWidth), npc1.position.y, Random.Range(npc1.position.z - areaHeight, npc1.position.z + areaHeight));
-            SetNeedsDestination(Area);
-        }
-        isChatting = true;
 
-        yield return new WaitForSeconds(25);
-        isChatting = false;
+            // Wait until the NPC is close to the area
+            while (Vector3.Distance(transform.position, npc1.position) > 0.5f)
+            {
+                // Calculate the destination based on the position of npc1
+
+                area = new Vector3(Random.Range(npc1.position.x - 0.5f, npc1.position.x + 0.5f), npc1.position.y, Random.Range(npc1.position.z - 0.5f, npc1.position.z + 0.5f));
+                // Set the destination to the calculated area
+                SetNeedsDestination(area);
+                yield return null;
+            }
+            var NavMeshAgent = npc1.GetComponent<NavMeshAgent>();
+            NavMeshAgent.speed = 0;
+            // Once the NPC reaches the area, it sets isChatting to true
+            isChatting = true;
+
+            // Continue chatting for 25 seconds
+            yield return new WaitForSeconds(25);
+
+            // After chatting, reset isChatting to false and allow the NPC to move again
+            isChatting = false;
+            NavMeshAgent.speed = 2;
+        }
+
+        // Set isChattingCoroutineRunning to false to indicate the end of the conversation
         isChattingCoroutineRunning = false;
     }
+
     private void CheckMoving()
     {
         if (navMeshAgent.velocity.magnitude > 0.1f)

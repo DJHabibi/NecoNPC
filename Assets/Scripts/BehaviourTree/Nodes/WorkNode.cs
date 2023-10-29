@@ -33,10 +33,10 @@ namespace OpenAI
             // Check for fulfillment, coroutine flags, and return appropriate state.
             if (npc.fullfilment <= threshold &&
                 !aIMovement.isEatingCoroutineRunning &&
+               !aIMovement.isChattingCoroutineRunning &&
                 !aIMovement.isWorkingCoroutineRunning &&
                 !aIMovement.isPlayingCoroutineRunning)
             {
-                Debug.Log("WorkNode: SUCCESS");
                 aIMovement.StopCoroutine(aIMovement.RandomWalk());
                 aIMovement.StartCoroutine(aIMovement.Working());
                 return NodeState.SUCCESS;
