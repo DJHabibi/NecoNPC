@@ -18,6 +18,7 @@ namespace OpenAI
         private List<ChatMessage> messages = new List<ChatMessage>();
         GameObject player;
         [SerializeField] public ChatPrompt npcBehaviour;
+        public ChatPrompt chattingIntruction;
         [SerializeField] Animator animator;
         [SerializeField] GameObject message;
         [SerializeField] NavMeshAgent agent;
@@ -113,9 +114,9 @@ namespace OpenAI
                 Role = "user",
                 Content = chat,
             };
-
-            npc.messages.Add(newMessage);
             npc.AppendMessage(newMessage);
+            if (messages.Count == 0) newMessage.Content = chattingIntruction.NpcBehaviour + "\n" + chat;
+            npc.messages.Add(newMessage);
 
             // Complete the instruction
             var completionResponse = await openai.CreateChatCompletion(new CreateChatCompletionRequest()

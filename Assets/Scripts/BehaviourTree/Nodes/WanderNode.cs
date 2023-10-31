@@ -25,7 +25,6 @@ namespace OpenAI
                 !npc.Bored() &&  // Check for boredom
                 !npc.NotFullfiled()) // Check for fullfilment
             {
-                Debug.Log("WANDER: SUCCESS");
                 aIMovement.StartCoroutine(aIMovement.RandomWalk());
                 return NodeState.SUCCESS;
             }

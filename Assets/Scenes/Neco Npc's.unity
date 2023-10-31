@@ -2303,17 +2303,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   npcMovement: {fileID: 9114707292705644059}
   npc2: {fileID: 9114707292705644058}
-  prompt: {fileID: 11400000, guid: 7fda970f2c79ceb44ada135d3ea03e86, type: 2}
   maxDistance: 20
   areaWidth: 3
   areaHeight: 3
   npcAnimator: {fileID: 836887993}
   npc2Animator: {fileID: 751860457}
-  PILK: {fileID: 1820443189}
   npc1: {fileID: 5607285598383658037}
   iconEat: {fileID: 172410107}
   iconPlay: {fileID: 2101175408}
   iconWork: {fileID: 39176571}
+  PILK: {fileID: 1820443189}
   food: {fileID: 2116739669}
   entertainment: {fileID: 736998419}
   work: {fileID: 213999189}
@@ -2367,6 +2366,7 @@ MonoBehaviour:
   sent: {fileID: 8660877164928630359, guid: 53cd26a6eefa5a74086203cd118a04d3, type: 3}
   received: {fileID: 961534450149497043, guid: adc0146c2853ed1418133faaf4379eb1, type: 3}
   npcBehaviour: {fileID: 11400000, guid: 7fda970f2c79ceb44ada135d3ea03e86, type: 2}
+  chattingIntruction: {fileID: 11400000, guid: 0f8621d146a70e342a2e358408b30fa8, type: 2}
   animator: {fileID: 836887993}
   message: {fileID: 1142011849}
   agent: {fileID: 0}
@@ -6958,6 +6958,7 @@ MonoBehaviour:
   sent: {fileID: 8660877164928630359, guid: 53cd26a6eefa5a74086203cd118a04d3, type: 3}
   received: {fileID: 961534450149497043, guid: adc0146c2853ed1418133faaf4379eb1, type: 3}
   npcBehaviour: {fileID: 11400000, guid: 7fda970f2c79ceb44ada135d3ea03e86, type: 2}
+  chattingIntruction: {fileID: 11400000, guid: 0f8621d146a70e342a2e358408b30fa8, type: 2}
   animator: {fileID: 751860457}
   message: {fileID: 1772058113600459036}
   agent: {fileID: 0}
@@ -6990,17 +6991,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   npcMovement: {fileID: 1139031884}
   npc2: {fileID: 1139031886}
-  prompt: {fileID: 11400000, guid: 7fda970f2c79ceb44ada135d3ea03e86, type: 2}
   maxDistance: 20
   areaWidth: 3
   areaHeight: 3
   npcAnimator: {fileID: 751860457}
   npc2Animator: {fileID: 836887993}
-  PILK: {fileID: 1389234110}
   npc1: {fileID: 1139031888}
   iconEat: {fileID: 2066033062}
   iconPlay: {fileID: 2072450589}
   iconWork: {fileID: 1372750783}
+  PILK: {fileID: 1389234110}
   food: {fileID: 2116739669}
   entertainment: {fileID: 736998419}
   work: {fileID: 213999189}

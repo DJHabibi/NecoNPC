@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cc55d3956980d24d8c64b6fcccb64b9, type: 3}
+  m_Name: Chatting Intructions
+  m_EditorClassIdentifier: 
+  NpcBehaviour: "\"Let's have a relaxed and natural conversation. Share a topic,
+    a story, or your thoughts, and we can chat about it. No need for formalities
+    or asking how I can assist you today.Do not ask how you can assist, Just dive
+    in, and let's talk!\" \n\nYou are having a conversation and the next input is
+    what the other person said to you: "

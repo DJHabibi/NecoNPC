@@ -13,14 +13,16 @@ public class AIMovementBehaviour : MonoBehaviour
     public AIMovementBehaviour npcMovement;
     private NPC npc;
     public NPC npc2;
-    public ChatPrompt prompt;
     public float maxDistance;
     public float areaWidth, areaHeight;
     public Animator npcAnimator, npc2Animator;
-    public GameObject PILK;
+
     public Transform npc1;
     public GameObject iconEat, iconPlay, iconWork;
+    public GameObject PILK;
+
     [SerializeField] public Transform food, entertainment, work;
+
     public bool isEatingCoroutineRunning = false;
     public bool isPlayingCoroutineRunning = false;
     public bool isWorkingCoroutineRunning = false;
@@ -170,7 +172,8 @@ public class AIMovementBehaviour : MonoBehaviour
         // Start the conversation with the chat message
         isChatting = true;
         #region Dialog
-        var npcResponse1Task = npc.InitialChat(npc, "Hello, NecoArc!");
+
+        var npcResponse1Task = npc.InitialChat(npc,"Hello");
         npcAnimator.SetTrigger("Talk");
         // Yield until the task is complete
         while (!npcResponse1Task.IsCompleted)
@@ -180,22 +183,20 @@ public class AIMovementBehaviour : MonoBehaviour
 
         string npcResponse1 = npcResponse1Task.Result;
         Debug.Log(npcResponse1);
-
         yield return new WaitForSeconds(3);
 
-        var npcResponse2Task = npc2.InitialChat(npc2, npcResponse1);
+        var npcResponse2Task = npc2.InitialChat(npc2,npcResponse1);
         npc2Animator.SetTrigger("Talk");
         // Yield until the task is complete
         while (!npcResponse2Task.IsCompleted)
         {
             yield return null;
         }
-
         string npcResponse2 = npcResponse2Task.Result;
         Debug.Log(npcResponse2);
         yield return new WaitForSeconds(3);
 
-        var npcResponse3Task = npc.InitialChat(npc, npcResponse2);
+        var npcResponse3Task = npc.InitialChat(npc,npcResponse2);
         npcAnimator.SetTrigger("Talk");
         // Yield until the task is complete
         while (!npcResponse3Task.IsCompleted)
@@ -205,6 +206,19 @@ public class AIMovementBehaviour : MonoBehaviour
 
         string npcResponse3 = npcResponse3Task.Result;
         Debug.Log(npcResponse3);
+        yield return new WaitForSeconds(3);
+
+        var npcResponse4Task = npc2.InitialChat(npc2,npcResponse3);
+        npc2Animator.SetTrigger("Talk");
+        // Yield until the task is complete
+        while (!npcResponse4Task.IsCompleted)
+        {
+            yield return null;
+        }
+        string npcResponse4 = npcResponse4Task.Result;
+        Debug.Log(npcResponse4);
+        yield return new WaitForSeconds(3);
+
         #endregion
         // Continue chatting for 25 seconds, you can add more messages here
         yield return new WaitForSeconds(25);
