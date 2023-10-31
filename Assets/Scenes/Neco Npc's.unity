@@ -2301,7 +2301,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72ba7b5716e32eb4c8a0138e3632b630, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  npc2: {fileID: 0}
+  npcMovement: {fileID: 9114707292705644059}
+  npc2: {fileID: 9114707292705644058}
   prompt: {fileID: 11400000, guid: 7fda970f2c79ceb44ada135d3ea03e86, type: 2}
   maxDistance: 20
   areaWidth: 3
@@ -6987,7 +6988,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72ba7b5716e32eb4c8a0138e3632b630, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  npc2: {fileID: 0}
+  npcMovement: {fileID: 1139031884}
+  npc2: {fileID: 1139031886}
   prompt: {fileID: 11400000, guid: 7fda970f2c79ceb44ada135d3ea03e86, type: 2}
   maxDistance: 20
   areaWidth: 3

@@ -10,6 +10,7 @@ using Random = UnityEngine.Random;
 public class AIMovementBehaviour : MonoBehaviour
 {
     private NavMeshAgent navMeshAgent;
+    public AIMovementBehaviour npcMovement;
     private NPC npc;
     public NPC npc2;
     public ChatPrompt prompt;
@@ -155,9 +156,8 @@ public class AIMovementBehaviour : MonoBehaviour
     public IEnumerator Chatting()
     {
         isChattingCoroutineRunning = true;
-
-        
-
+        npcMovement.StopCoroutine(RandomWalk());
+        npcMovement.navMeshAgent.speed = 0;
         while (Vector3.Distance(transform.position, npc1.position) > 1f)
         {
             // Calculate the destination based on the position of npc1
@@ -211,10 +211,9 @@ public class AIMovementBehaviour : MonoBehaviour
 
         // After chatting, reset isChatting to false and allow the NPC to move again
         isChatting = false;
-
-
         // Set isChattingCoroutineRunning to false to indicate the end of the conversation
         isChattingCoroutineRunning = false;
+        npcMovement.navMeshAgent.speed = 2;
     }
 
     private void CheckMoving()
