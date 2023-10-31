@@ -2,6 +2,7 @@ using OpenAI;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
@@ -10,6 +11,7 @@ public class AIMovementBehaviour : MonoBehaviour
 {
     private NavMeshAgent navMeshAgent;
     private NPC npc;
+    public NPC npc2;
     public ChatPrompt prompt;
     public float maxDistance;
     public float areaWidth, areaHeight;
@@ -28,12 +30,14 @@ public class AIMovementBehaviour : MonoBehaviour
     public bool isWorking;
     public bool isEating;
     public bool isChatting;
+    public bool closeToTalk;
 
 
     private void Start()
     {
         npc = GetComponent<NPC>();
         navMeshAgent = GetComponent<NavMeshAgent>();
+
         PILK.SetActive(false);
         iconEat.SetActive(false);
         iconPlay.SetActive(false);
@@ -42,6 +46,7 @@ public class AIMovementBehaviour : MonoBehaviour
     public void Update()
     {
         CheckMoving();
+        CheckIfCloseToTalk();
     }
     public void SetWanderDestination()
     {
@@ -150,31 +155,61 @@ public class AIMovementBehaviour : MonoBehaviour
     public IEnumerator Chatting()
     {
         isChattingCoroutineRunning = true;
-        Vector3 area;
+        
+
         while (isChattingCoroutineRunning)
         {
-
-            // Wait until the NPC is close to the area
-            while (Vector3.Distance(transform.position, npc1.position) > 0.5f)
+            if (Vector3.Distance(transform.position, npc1.position) > 1f)
             {
                 // Calculate the destination based on the position of npc1
-
-                area = new Vector3(Random.Range(npc1.position.x - 0.5f, npc1.position.x + 0.5f), npc1.position.y, Random.Range(npc1.position.z - 0.5f, npc1.position.z + 0.5f));
-                // Set the destination to the calculated area
-                SetNeedsDestination(area);
+                closeToTalk = false;
+                
                 yield return null;
             }
-            var NavMeshAgent = npc1.GetComponent<NavMeshAgent>();
-            NavMeshAgent.speed = 0;
-            // Once the NPC reaches the area, it sets isChatting to true
-            isChatting = true;
+            else closeToTalk = true;
 
-            // Continue chatting for 25 seconds
+            // Start the conversation with the chat message
+            isChatting = true;
+            var npcResponse1Task = npc.InitialChat(npc, "Hello, NecoArc!");
+
+            // Yield until the task is complete
+            while (!npcResponse1Task.IsCompleted)
+            {
+                yield return null;
+            }
+
+            string npcResponse1 = npcResponse1Task.Result;
+            Debug.Log(npcResponse1);
+
+            yield return new WaitForSeconds(3);
+
+            var npcResponse2Task = npc2.InitialChat(npc2, npcResponse1);
+
+            // Yield until the task is complete
+            while (!npcResponse2Task.IsCompleted)
+            {
+                yield return null;
+            }
+
+            string npcResponse2 = npcResponse2Task.Result;
+            Debug.Log(npcResponse2);
+            yield return new WaitForSeconds(3);
+
+            var npcResponse3Task = npc.InitialChat(npc, npcResponse2);
+
+            // Yield until the task is complete
+            while (!npcResponse3Task.IsCompleted)
+            {
+                yield return null;
+            }
+
+            string npcResponse3 = npcResponse3Task.Result;
+            Debug.Log(npcResponse3);
+            // Continue chatting for 25 seconds, you can add more messages here
             yield return new WaitForSeconds(25);
 
             // After chatting, reset isChatting to false and allow the NPC to move again
             isChatting = false;
-            NavMeshAgent.speed = 2;
         }
 
         // Set isChattingCoroutineRunning to false to indicate the end of the conversation
@@ -192,5 +227,14 @@ public class AIMovementBehaviour : MonoBehaviour
             npcAnimator.SetBool("Walking", false);
         }
     }
-
+    private void CheckIfCloseToTalk()
+    {
+        Vector3 area;
+        if (!closeToTalk)
+        {
+            area = new Vector3(Random.Range(npc1.position.x - 0.5f, npc1.position.x + 0.5f), npc1.position.y, Random.Range(npc1.position.z - 0.5f, npc1.position.z + 0.5f));
+            // Set the destination to the calculated area
+            SetNeedsDestination(area);
+        }
+    }
 }

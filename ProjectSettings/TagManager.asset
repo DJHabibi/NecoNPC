@@ -8,6 +8,7 @@ TagManager:
   - PlayerInputField
   - PlayerButton
   - Collider
+  - NPC
   layers:
   - Default
   - TransparentFX

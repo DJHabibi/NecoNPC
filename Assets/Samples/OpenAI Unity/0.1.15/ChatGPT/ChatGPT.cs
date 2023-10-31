@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine.AI;
+using System.Threading.Tasks;
 
 namespace OpenAI
 {
@@ -23,6 +24,7 @@ namespace OpenAI
         [SerializeField] private CameraManager camera;
         public float agentDefaultSpeed;
         private bool isPlayerInsideTrigger;
+        private string _msg;
 
         public virtual void Start()
         {
@@ -104,6 +106,39 @@ namespace OpenAI
                 Temperature = 0.4f,
             });
         }
+public async Task<string> InitialChat(NPC npc, string chat)
+{
+    var newMessage = new ChatMessage()
+    {
+        Role = "user",
+        Content = chat,
+    };
+
+    messages.Add(newMessage);
+    AppendMessage(newMessage);
+
+    // Complete the instruction
+    var completionResponse = await openai.CreateChatCompletion(new CreateChatCompletionRequest()
+    {
+        Model = "gpt-3.5-turbo-0613",
+        Messages = messages,
+        Temperature = 0.4f,
+    });
+
+    if (completionResponse.Choices != null && completionResponse.Choices.Count > 0)
+    {
+        var response = completionResponse.Choices[0].Message.Content.Trim();
+        messages.Add(new ChatMessage() { Role = "assistant", Content = response });
+        return response;
+    }
+    else
+    {
+        Debug.LogWarning("No text was generated from this prompt.");
+        return "No response generated.";
+    }
+}
+
+
         public virtual void OnTriggerEnter(Collider other)
         {
             if (other.gameObject == player)
@@ -114,7 +149,11 @@ namespace OpenAI
                 button = GameObject.FindGameObjectWithTag("PlayerButton").GetComponent<Button>();
                 button.onClick.AddListener(SendReply);
                 agent.speed = 0;
-               
+
+            }
+            if (other.gameObject.tag == "NPC")
+            {
+                message.SetActive(true);
             }
         }
         public virtual void OnTriggerExit(Collider other)
@@ -126,9 +165,11 @@ namespace OpenAI
                 inputField = null;
                 button.onClick.RemoveListener(SendReply);
                 button = null;
-                agent.speed = agentDefaultSpeed;
-               
-
+                agent.speed = agentDefaultSpeed;          
+            }
+            if (other.gameObject.tag == "NPC")
+            {
+                message.SetActive(false);
             }
         }
         public virtual void OnTriggerStay(Collider other)
