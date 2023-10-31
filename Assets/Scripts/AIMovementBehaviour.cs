@@ -15,7 +15,7 @@ public class AIMovementBehaviour : MonoBehaviour
     public ChatPrompt prompt;
     public float maxDistance;
     public float areaWidth, areaHeight;
-    public Animator npcAnimator;
+    public Animator npcAnimator, npc2Animator;
     public GameObject PILK;
     public Transform npc1;
     public GameObject iconEat, iconPlay, iconWork;
@@ -36,8 +36,8 @@ public class AIMovementBehaviour : MonoBehaviour
     private void Start()
     {
         npc = GetComponent<NPC>();
+        
         navMeshAgent = GetComponent<NavMeshAgent>();
-
         PILK.SetActive(false);
         iconEat.SetActive(false);
         iconPlay.SetActive(false);
@@ -155,62 +155,63 @@ public class AIMovementBehaviour : MonoBehaviour
     public IEnumerator Chatting()
     {
         isChattingCoroutineRunning = true;
+
         
 
-        while (isChattingCoroutineRunning)
+        while (Vector3.Distance(transform.position, npc1.position) > 1f)
         {
-            if (Vector3.Distance(transform.position, npc1.position) > 1f)
-            {
-                // Calculate the destination based on the position of npc1
-                closeToTalk = false;
-                
-                yield return null;
-            }
-            else closeToTalk = true;
+            // Calculate the destination based on the position of npc1
+            closeToTalk = false;
 
-            // Start the conversation with the chat message
-            isChatting = true;
-            var npcResponse1Task = npc.InitialChat(npc, "Hello, NecoArc!");
-
-            // Yield until the task is complete
-            while (!npcResponse1Task.IsCompleted)
-            {
-                yield return null;
-            }
-
-            string npcResponse1 = npcResponse1Task.Result;
-            Debug.Log(npcResponse1);
-
-            yield return new WaitForSeconds(3);
-
-            var npcResponse2Task = npc2.InitialChat(npc2, npcResponse1);
-
-            // Yield until the task is complete
-            while (!npcResponse2Task.IsCompleted)
-            {
-                yield return null;
-            }
-
-            string npcResponse2 = npcResponse2Task.Result;
-            Debug.Log(npcResponse2);
-            yield return new WaitForSeconds(3);
-
-            var npcResponse3Task = npc.InitialChat(npc, npcResponse2);
-
-            // Yield until the task is complete
-            while (!npcResponse3Task.IsCompleted)
-            {
-                yield return null;
-            }
-
-            string npcResponse3 = npcResponse3Task.Result;
-            Debug.Log(npcResponse3);
-            // Continue chatting for 25 seconds, you can add more messages here
-            yield return new WaitForSeconds(25);
-
-            // After chatting, reset isChatting to false and allow the NPC to move again
-            isChatting = false;
+            yield return null;
         }
+        closeToTalk = true;
+
+        // Start the conversation with the chat message
+        isChatting = true;
+        #region Dialog
+        var npcResponse1Task = npc.InitialChat(npc, "Hello, NecoArc!");
+        npcAnimator.SetTrigger("Talk");
+        // Yield until the task is complete
+        while (!npcResponse1Task.IsCompleted)
+        {
+            yield return null;
+        }
+
+        string npcResponse1 = npcResponse1Task.Result;
+        Debug.Log(npcResponse1);
+
+        yield return new WaitForSeconds(3);
+
+        var npcResponse2Task = npc2.InitialChat(npc2, npcResponse1);
+        npc2Animator.SetTrigger("Talk");
+        // Yield until the task is complete
+        while (!npcResponse2Task.IsCompleted)
+        {
+            yield return null;
+        }
+
+        string npcResponse2 = npcResponse2Task.Result;
+        Debug.Log(npcResponse2);
+        yield return new WaitForSeconds(3);
+
+        var npcResponse3Task = npc.InitialChat(npc, npcResponse2);
+        npcAnimator.SetTrigger("Talk");
+        // Yield until the task is complete
+        while (!npcResponse3Task.IsCompleted)
+        {
+            yield return null;
+        }
+
+        string npcResponse3 = npcResponse3Task.Result;
+        Debug.Log(npcResponse3);
+        #endregion
+        // Continue chatting for 25 seconds, you can add more messages here
+        yield return new WaitForSeconds(25);
+
+        // After chatting, reset isChatting to false and allow the NPC to move again
+        isChatting = false;
+
 
         // Set isChattingCoroutineRunning to false to indicate the end of the conversation
         isChattingCoroutineRunning = false;
@@ -230,7 +231,7 @@ public class AIMovementBehaviour : MonoBehaviour
     private void CheckIfCloseToTalk()
     {
         Vector3 area;
-        if (!closeToTalk)
+        if (!closeToTalk && isChattingCoroutineRunning)
         {
             area = new Vector3(Random.Range(npc1.position.x - 0.5f, npc1.position.x + 0.5f), npc1.position.y, Random.Range(npc1.position.z - 0.5f, npc1.position.z + 0.5f));
             // Set the destination to the calculated area

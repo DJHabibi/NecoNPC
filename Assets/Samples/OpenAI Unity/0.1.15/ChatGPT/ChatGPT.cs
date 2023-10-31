@@ -93,7 +93,7 @@ namespace OpenAI
             var newMessage = new ChatMessage()
             {
                 Role = "user",
-                Content = npcBehaviour.NpcBehaviour +state,
+                Content = npcBehaviour.NpcBehaviour + state,
             };
 
             messages.Add(newMessage);
@@ -106,37 +106,37 @@ namespace OpenAI
                 Temperature = 0.4f,
             });
         }
-public async Task<string> InitialChat(NPC npc, string chat)
-{
-    var newMessage = new ChatMessage()
-    {
-        Role = "user",
-        Content = chat,
-    };
+        public async Task<string> InitialChat(NPC npc, string chat)
+        {
+            var newMessage = new ChatMessage()
+            {
+                Role = "user",
+                Content = chat,
+            };
 
-    messages.Add(newMessage);
-    AppendMessage(newMessage);
+            npc.messages.Add(newMessage);
+            npc.AppendMessage(newMessage);
 
-    // Complete the instruction
-    var completionResponse = await openai.CreateChatCompletion(new CreateChatCompletionRequest()
-    {
-        Model = "gpt-3.5-turbo-0613",
-        Messages = messages,
-        Temperature = 0.4f,
-    });
+            // Complete the instruction
+            var completionResponse = await openai.CreateChatCompletion(new CreateChatCompletionRequest()
+            {
+                Model = "gpt-3.5-turbo-0613",
+                Messages = messages,
+                Temperature = 0.4f,
+            });
 
-    if (completionResponse.Choices != null && completionResponse.Choices.Count > 0)
-    {
-        var response = completionResponse.Choices[0].Message.Content.Trim();
-        messages.Add(new ChatMessage() { Role = "assistant", Content = response });
-        return response;
-    }
-    else
-    {
-        Debug.LogWarning("No text was generated from this prompt.");
-        return "No response generated.";
-    }
-}
+            if (completionResponse.Choices != null && completionResponse.Choices.Count > 0)
+            {
+                var response = completionResponse.Choices[0].Message.Content.Trim();
+                messages.Add(new ChatMessage() { Role = "assistant", Content = response });
+                return response;
+            }
+            else
+            {
+                Debug.LogWarning("No text was generated from this prompt.");
+                return "No response generated.";
+            }
+        }
 
 
         public virtual void OnTriggerEnter(Collider other)
@@ -165,7 +165,7 @@ public async Task<string> InitialChat(NPC npc, string chat)
                 inputField = null;
                 button.onClick.RemoveListener(SendReply);
                 button = null;
-                agent.speed = agentDefaultSpeed;          
+                agent.speed = agentDefaultSpeed;
             }
             if (other.gameObject.tag == "NPC")
             {
@@ -174,11 +174,11 @@ public async Task<string> InitialChat(NPC npc, string chat)
         }
         public virtual void OnTriggerStay(Collider other)
         {
-            if(other.gameObject == player && inputField.isFocused)
+            if (other.gameObject == player && inputField.isFocused)
             {
                 camera.focusTransform = this.gameObject.transform;
             }
-            if (inputField !=null && !inputField.isFocused)
+            if (inputField != null && !inputField.isFocused)
             {
                 camera.focusTransform = camera.playerFocus;
             }
@@ -191,7 +191,7 @@ public async Task<string> InitialChat(NPC npc, string chat)
         private void RotateToFacePlayer(Transform target)
         {
             Vector3 lookDirection = target.position - transform.position;
-            lookDirection.y = 0; 
+            lookDirection.y = 0;
 
             if (lookDirection != Vector3.zero)
             {
