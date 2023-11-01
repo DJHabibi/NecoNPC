@@ -18,7 +18,7 @@ public class AIMovementBehaviour : MonoBehaviour
     public Animator npcAnimator, npc2Animator;
 
     public Transform npc1;
-    public GameObject iconEat, iconPlay, iconWork;
+    public GameObject iconEat, iconPlay, iconWork,iconChat;
     public GameObject PILK;
 
     [SerializeField] public Transform food, entertainment, work;
@@ -45,6 +45,7 @@ public class AIMovementBehaviour : MonoBehaviour
         iconEat.SetActive(false);
         iconPlay.SetActive(false);
         iconWork.SetActive(false);
+        iconChat.SetActive(false);
     }
     public void Update()
     {
@@ -158,6 +159,7 @@ public class AIMovementBehaviour : MonoBehaviour
     public IEnumerator Chatting()
     {
         isChattingCoroutineRunning = true;
+        iconChat.SetActive(true);
         npcMovement.StopCoroutine(RandomWalk());
         npcMovement.navMeshAgent.speed = 0;
         while (Vector3.Distance(transform.position, npc1.position) > 1f)
@@ -227,6 +229,7 @@ public class AIMovementBehaviour : MonoBehaviour
         isChatting = false;
         // Set isChattingCoroutineRunning to false to indicate the end of the conversation
         isChattingCoroutineRunning = false;
+        iconChat.SetActive(false);
         npcMovement.navMeshAgent.speed = 2;
     }
 
