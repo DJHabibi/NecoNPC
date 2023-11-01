@@ -123,7 +123,7 @@ namespace OpenAI
             {
                 Model = "gpt-3.5-turbo-0613",
                 Messages = messages,
-                Temperature = 0.4f,
+                Temperature = 0.2f,
             });
 
             if (completionResponse.Choices != null && completionResponse.Choices.Count > 0)
@@ -186,18 +186,18 @@ namespace OpenAI
             if (isPlayerInsideTrigger && inputField != null && inputField.isFocused)
             {
                 // Continuously rotate to face the player when the player is inside and input is focused
-                RotateToFacePlayer(player.transform);
+                RotateToFacePlayer(this.transform,player.transform);
             }
         }
-        private void RotateToFacePlayer(Transform target)
+        public void RotateToFacePlayer(Transform target1,Transform target2)
         {
-            Vector3 lookDirection = target.position - transform.position;
+            Vector3 lookDirection = target2.position - target1.transform.position;
             lookDirection.y = 0;
 
             if (lookDirection != Vector3.zero)
             {
                 //Rotate the object to face the player
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookDirection), Time.deltaTime * 2);
+                target1.transform.rotation = Quaternion.Slerp(target1.transform.rotation, Quaternion.LookRotation(lookDirection), Time.deltaTime * 2);
             }
         }
     }

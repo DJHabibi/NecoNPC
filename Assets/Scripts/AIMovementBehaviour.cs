@@ -250,5 +250,10 @@ public class AIMovementBehaviour : MonoBehaviour
             // Set the destination to the calculated area
             SetNeedsDestination(area);
         }
+        if(closeToTalk && isChattingCoroutineRunning)
+        {
+            npc.RotateToFacePlayer(npc1.transform,this.transform);
+            
+        }
     }
 }
