@@ -221,6 +221,28 @@ public class AIMovementBehaviour : MonoBehaviour
         Debug.Log(npcResponse4);
         yield return new WaitForSeconds(3);
 
+        var npcResponse5Task = npc.InitialChat(npc, npcResponse4);
+        npcAnimator.SetTrigger("Talk");
+        // Yield until the task is complete
+        while (!npcResponse5Task.IsCompleted)
+        {
+            yield return null;
+        }
+        string npcResponse5 = npcResponse5Task.Result;
+        Debug.Log(npcResponse5);
+        yield return new WaitForSeconds(3);
+
+        var npcResponse6Task = npc2.InitialChat(npc2, npcResponse5);
+        npc2Animator.SetTrigger("Talk");
+        // Yield until the task is complete
+        while (!npcResponse6Task.IsCompleted)
+        {
+            yield return null;
+        }
+        string npcResponse6 = npcResponse6Task.Result;
+        Debug.Log(npcResponse6);
+        yield return new WaitForSeconds(3);
+
         #endregion
         // Continue chatting for 25 seconds, you can add more messages here
         yield return new WaitForSeconds(25);
